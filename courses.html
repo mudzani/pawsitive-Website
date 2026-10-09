@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Courses | Pawsitive Pet Academy</title>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">Pawsitive Pet Academy</a>
+        <nav aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="courses.html" aria-current="page">Courses</a>
+            <a href="fees.html">Calculate Fees</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+        <a href="fees.html" class="button button-primary">Enrol</a>
+    </header>
+
+    <main>
+        <section class="page-intro">
+            <p class="eyebrow">Find your course</p>
+            <h1>Our Courses</h1>
+            <p>
+                Explore our professional development programmes and short
+                courses in pet care and animal training.
+            </p>
+        </section>
+
+        <section class="course-search">
+            <form action="courses.html" method="get">
+                <label for="course-search">Search courses</label>
+                <input type="search" id="course-search"
+                       name="search" placeholder="Search courses">
+
+                <label for="course-filter">Course type</label>
+                <select id="course-filter" name="type">
+                    <option value="all">All Courses</option>
+                    <option value="professional">Professional Programmes</option>
+                    <option value="short">Short Courses</option>
+                </select>
+
+                <button type="submit" class="button button-secondary">
+                    Search
+                </button>
+            </form>
+        </section>
+
+        <section class="course-list-section">
+            <h2>Professional Development Programmes</h2>
+
+            <div class="course-grid">
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Dog obedience training image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Canine Obedience Training</h3>
+                        <p>Learn about dog training and obedience.</p>
+                        <p class="course-duration">Duration: 12 weeks</p>
+                        <p class="course-price">R1,500</p>
+                        <a href="course-details.html#canine-obedience-training"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Pet grooming image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Pet Grooming</h3>
+                        <p>Explore grooming techniques and coat care.</p>
+                        <p class="course-duration">Duration: 12 weeks</p>
+                        <p class="course-price">R1,500</p>
+                        <a href="course-details.html#pet-grooming"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Animal behaviour image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Animal Behaviour</h3>
+                        <p>Learn about animal behaviour and communication.</p>
+                        <p class="course-duration">Duration: 12 weeks</p>
+                        <p class="course-price">R1,500</p>
+                        <a href="course-details.html#animal-behaviour"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Pet business image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Pet Business Management</h3>
+                        <p>Explore the basics of managing a pet business.</p>
+                        <p class="course-duration">Duration: 12 weeks</p>
+                        <p class="course-price">R1,500</p>
+                        <a href="course-details.html#pet-business-management"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="course-list-section">
+            <h2>Short Courses</h2>
+
+            <div class="course-grid">
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Puppy care image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Puppy Care</h3>
+                        <p>Learn about the basic needs of a puppy.</p>
+                        <p class="course-duration">Duration: 6 weeks</p>
+                        <p class="course-price">R750</p>
+                        <a href="course-details.html#puppy-care"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Pet first aid image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Pet First Aid</h3>
+                        <p>Understand basic first-aid awareness for pets.</p>
+                        <p class="course-duration">Duration: 6 weeks</p>
+                        <p class="course-price">R750</p>
+                        <a href="course-details.html#pet-first-aid"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="card-image image-placeholder"
+                         role="img" aria-label="Dog walking image">
+                        Course Image
+                    </div>
+                    <div class="card-content">
+                        <h3>Basic Dog Walking</h3>
+                        <p>Learn the basics of safe and responsible dog walking.</p>
+                        <p class="course-duration">Duration: 6 weeks</p>
+                        <p class="course-price">R750</p>
+                        <a href="course-details.html#basic-dog-walking"
+                           class="button button-secondary">View Details</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="discount-info">
+            <h2>Multi-Course Discounts</h2>
+            <p>Choose more than one course to qualify for a discount.</p>
+            <ul>
+                <li>1 course: No discount</li>
+                <li>2 courses: 5% discount</li>
+                <li>3 courses: 10% discount</li>
+                <li>More than 3 courses: 15% discount</li>
+            </ul>
+            <a href="fees.html" class="button button-primary">
+                Calculate Fees
+            </a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <h2>Pawsitive Pet Academy</h2>
+        <nav aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="courses.html">Courses</a>
+            <a href="fees.html">Calculate Fees</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+        <p>Contact details to be confirmed by client.</p>
+        <p>&copy; 2026 Pawsitive Pet Academy. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
