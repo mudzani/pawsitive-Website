@@ -8,8 +8,12 @@
 </head>
 <body>
 
+    <!-- Shared site header: academy identity and primary page navigation. -->
     <header class="site-header">
-        <a href="index.html" class="logo">Pawsitive Pet Academy</a>
+        <a href="index.html" class="logo" aria-label="Pawsitive Pet Academy home">
+            <span>Pawsitive</span>
+            <span>Pet Academy</span>
+        </a>
         <nav aria-label="Main navigation">
             <a href="index.html">Home</a>
             <a href="about.html">About Us</a>
@@ -17,138 +21,172 @@
             <a href="fees.html" aria-current="page">Calculate Fees</a>
             <a href="contact.html">Contact Us</a>
         </nav>
-        <a href="fees.html" class="button button-primary">Enrol</a>
     </header>
 
     <main>
+        <!-- Fee calculator introduction explains the course-selection task. -->
         <section class="page-intro">
             <p class="eyebrow">Plan your learning</p>
-            <h1>Calculate Your Fees</h1>
+            <h1>Calculate Fees</h1>
             <p>
-                Select the courses you are interested in to view a fee
-                summary and applicable multi-course discount.
+                Choose your courses, explore your bundle savings and see
+                a clear breakdown before you enrol.
             </p>
         </section>
 
+        <!-- Course choices and the associated fee summary form the calculator. -->
         <div class="fee-calculator-layout">
             <section class="course-selection">
-                <h2>Select Your Courses</h2>
+                <h2>Select your courses</h2>
+                <p>Choose any combination of professional and short courses.</p>
 
-                <form action="#" method="get">
+                <form id="fee-calculator-form" action="#" method="get">
                     <fieldset>
-                        <legend>Professional Development Programmes</legend>
+                        <legend>Professional courses</legend>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
-                                   value="canine-obedience-training">
-                            Canine Obedience Training — R1,500
+                                   value="canine-obedience-training" checked>
+                            <span>Canine Obedience Training</span>
+                            <span>Professional · 12 weeks</span>
+                            <span>R1500</span>
                         </label>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
-                                   value="pet-grooming">
-                            Pet Grooming — R1,500
+                                   value="pet-grooming" checked>
+                            <span>Pet Grooming</span>
+                            <span>Professional · 12 weeks</span>
+                            <span>R1500</span>
                         </label>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
                                    value="animal-behaviour">
-                            Animal Behaviour — R1,500
+                            <span>Animal Behaviour</span>
+                            <span>Professional · 12 weeks</span>
+                            <span>R1500</span>
                         </label>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
                                    value="pet-business-management">
-                            Pet Business Management — R1,500
+                            <span>Pet Business Management</span>
+                            <span>Professional · 12 weeks</span>
+                            <span>R1500</span>
                         </label>
                     </fieldset>
 
                     <fieldset>
-                        <legend>Short Courses</legend>
+                        <legend>Short courses</legend>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
                                    value="puppy-care">
-                            Puppy Care — R750
+                            <span>Puppy Care</span>
+                            <span>Short course · 6 weeks</span>
+                            <span>R750</span>
                         </label>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
                                    value="pet-first-aid">
-                            Pet First Aid — R750
+                            <span>Pet First Aid</span>
+                            <span>Short course · 6 weeks</span>
+                            <span>R750</span>
                         </label>
 
                         <label class="course-option">
                             <input type="checkbox" name="courses"
                                    value="basic-dog-walking">
-                            Basic Dog Walking — R750
+                            <span>Basic Dog Walking</span>
+                            <span>Short course · 6 weeks</span>
+                            <span>R750</span>
                         </label>
                     </fieldset>
-
-                    <div class="discount-info">
-                        <h3>Discount Information</h3>
-                        <ul>
-                            <li>1 course: No discount</li>
-                            <li>2 courses: 5% discount</li>
-                            <li>3 courses: 10% discount</li>
-                            <li>More than 3 courses: 15% discount</li>
-                        </ul>
-                    </div>
-
-                    <button type="submit" class="button button-primary">
-                        Calculate
-                    </button>
                 </form>
+                <p>Listed course fees exclude VAT. Discounts apply before VAT is added.</p>
             </section>
 
             <aside class="quote-summary">
-                <h2>Quote Summary</h2>
+                <p class="eyebrow">Your learning plan</p>
+                <h2>Fee summary</h2>
+                <p>2 professional courses</p>
+                <ul>
+                    <li>Canine Obedience Training</li>
+                    <li>Pet Grooming</li>
+                </ul>
+                <p>You save R150.00 with this bundle.</p>
 
                 <dl>
                     <div class="summary-row">
-                        <dt>Number of Courses Selected</dt>
-                        <dd>0</dd>
-                    </div>
-
-                    <div class="summary-row">
                         <dt>Subtotal</dt>
-                        <dd>R0.00</dd>
+                        <dd>R3000.00</dd>
                     </div>
 
                     <div class="summary-row">
-                        <dt>Discount Applied</dt>
-                        <dd>R0.00</dd>
+                        <dt>Discount (5%)</dt>
+                        <dd>−R150.00</dd>
                     </div>
 
                     <div class="summary-row">
-                        <dt>VAT</dt>
-                        <dd>To be calculated</dd>
+                        <dt>After discount</dt>
+                        <dd>R2850.00</dd>
+                    </div>
+
+                    <div class="summary-row">
+                        <dt>15% VAT</dt>
+                        <dd>R427.50</dd>
                     </div>
 
                     <div class="summary-row summary-total">
-                        <dt>Final Total</dt>
-                        <dd>R0.00</dd>
+                        <dt>Total including VAT</dt>
+                        <dd>R3277.50</dd>
                     </div>
                 </dl>
 
+                <p>VAT is 15% of R2850.00, the amount after your course-count discount.</p>
+                <button type="submit" form="fee-calculator-form" class="button button-secondary">Calculate</button>
                 <a href="contact.html" class="button button-primary">
-                    Continue to Enrol
+                    Continue to enrol
                 </a>
             </aside>
         </div>
+
+        <!-- Discount thresholds explain the bundle savings available. -->
+        <section class="discount-info">
+            <h2>A little more learning, a little more savings.</h2>
+            <table>
+                <tbody>
+                    <tr><th scope="row">1 course</th><td>0% discount</td></tr>
+                    <tr><th scope="row">2 courses</th><td>5% discount</td></tr>
+                    <tr><th scope="row">3 courses</th><td>10% discount</td></tr>
+                    <tr><th scope="row">More than 3 courses</th><td>15% discount</td></tr>
+                </tbody>
+            </table>
+        </section>
     </main>
 
+    <!-- Shared footer: academy summary, secondary navigation, and legal links. -->
     <footer class="site-footer">
-        <h2>Pawsitive Pet Academy</h2>
-        <nav aria-label="Footer navigation">
-            <a href="index.html">Home</a>
-            <a href="about.html">About Us</a>
-            <a href="courses.html">Courses</a>
-            <a href="fees.html">Calculate Fees</a>
-            <a href="contact.html">Contact Us</a>
-        </nav>
-        <p>Contact details to be confirmed by client.</p>
-        <p>&copy; 2026 Pawsitive Pet Academy. All rights reserved.</p>
+        <div class="footer-brand">
+            <h2><span>Pawsitive</span> <span>Pet Academy</span></h2>
+            <p>Better learning. Kinder care. Practical pet education for the life you share.</p>
+        </div>
+        <div class="footer-links">
+            <h3>Explore the academy</h3>
+            <nav aria-label="Footer navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="courses.html">Courses</a>
+                <a href="fees.html">Calculate Fees</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+        </div>
+        <div class="footer-legal">
+            <p>&copy; 2026 Pawsitive Pet Academy. All rights reserved.</p>
+            <p>Privacy policy · Terms of use</p>
+        </div>
     </footer>
 
 </body>

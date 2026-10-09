@@ -8,170 +8,189 @@
 </head>
 <body>
 
+    <!-- Shared site header: academy identity and primary page navigation. -->
     <header class="site-header">
-        <a href="index.html" class="logo">Pawsitive Pet Academy</a>
-
+        <a href="index.html" class="logo" aria-label="Pawsitive Pet Academy home">
+            <span>Pawsitive</span>
+            <span>Pet Academy</span>
+        </a>
         <nav aria-label="Main navigation">
-            <a href="index.html">Home</a>
+            <a href="index.html" aria-current="page">Home</a>
             <a href="about.html">About Us</a>
             <a href="courses.html">Courses</a>
             <a href="fees.html">Calculate Fees</a>
             <a href="contact.html">Contact Us</a>
         </nav>
-
-        <a href="fees.html" class="button button-primary">Enrol</a>
     </header>
 
     <main>
+        <!-- Main introduction: the academy promise, summary, and course actions. -->
         <section class="hero">
             <div class="hero-content">
-                <p class="eyebrow">Pawsitive Pet Academy</p>
+                <p class="eyebrow">For the people who love pets</p>
                 <h1>Learn. Grow. Care.</h1>
                 <p>
-                    Develop your knowledge and practical skills in pet care,
-                    animal training and the pet care industry.
+                    Turn your love for animals into everyday confidence.
+                    Discover practical pet-care courses for loving owners
+                    and aspiring professionals.
                 </p>
                 <a href="courses.html" class="button button-primary">
-                    View Courses
+                    Explore courses
                 </a>
+                <a href="about.html" class="button button-secondary">
+                    Meet the academy
+                </a>
+                <p>Kind methods · Practical learning</p>
             </div>
 
             <div class="hero-image image-placeholder"
                  role="img"
-                 aria-label="Image of pets and animal training">
-                Pet Training Image
+                 aria-label="Pet owner learning alongside a dog and cat">
+                Hero image: pet owner with a dog and cat
             </div>
         </section>
 
+        <!-- Brief academy introduction, paired with a representative image. -->
         <section class="about-preview">
             <div class="section-image image-placeholder"
                  role="img"
-                 aria-label="Image representing the academy">
-                Academy Image
+                 aria-label="Dog being gently introduced to a training cue">
+                Academy introduction image
             </div>
 
             <div class="section-content">
-                <p class="eyebrow">Get to know us</p>
-                <h2>About Pawsitive Pet Academy</h2>
+                <p class="eyebrow">About the academy</p>
+                <h2>Big-hearted learning. Real-world care.</h2>
                 <p>
-                    Pawsitive Pet Academy provides learning opportunities
-                    for pet owners and people interested in developing
-                    skills in animal care and training.
+                    At Pawsitive Pet Academy, we believe understanding is
+                    the foundation of good care. Our courses connect the
+                    “why” behind animal behaviour with skills you can use
+                    in everyday life.
                 </p>
                 <a href="about.html" class="button button-secondary">
-                    Learn More
+                    About us
                 </a>
             </div>
         </section>
 
+        <!-- Three featured course summaries lead into the complete catalog. -->
         <section class="course-preview">
             <div class="section-heading">
-                <p class="eyebrow">Start learning</p>
-                <h2>Explore Our Courses</h2>
-                <p>Find a course that matches your interests and goals.</p>
+                <p class="eyebrow">Find your starting point</p>
+                <h2>Small steps. Pawsitive change.</h2>
+                <p>Explore a few of our pet-care learning paths.</p>
             </div>
 
             <div class="course-grid course-grid-three">
                 <article class="course-card">
                     <div class="card-image image-placeholder"
                          role="img"
-                         aria-label="Canine obedience training image">
-                        Course Image
+                         aria-label="Dog ready for an obedience training session">
+                        Canine obedience course image
                     </div>
                     <div class="card-content">
                         <h3>Canine Obedience Training</h3>
-                        <p>Develop skills in dog training and obedience.</p>
-                        <a href="course-details.html#canine-obedience-training">
-                            View Details
-                        </a>
+                        <p>Build a calmer connection through kind, reward-based training.</p>
+                        <p>R1500 · 12 weeks</p>
+                        <a href="canine-obedience-training.html">View details</a>
                     </div>
                 </article>
 
                 <article class="course-card">
                     <div class="card-image image-placeholder"
                          role="img"
-                         aria-label="Pet grooming image">
-                        Course Image
+                         aria-label="Puppies receiving gentle care">
+                        Puppy care course image
                     </div>
                     <div class="card-content">
-                        <h3>Pet Grooming</h3>
-                        <p>Learn the basics of grooming and coat care.</p>
-                        <a href="course-details.html#pet-grooming">
-                            View Details
-                        </a>
+                        <h3>Puppy Care</h3>
+                        <p>Give your new companion a gentle, confident start.</p>
+                        <p>R750 · 6 weeks</p>
+                        <a href="puppy-care.html">View details</a>
                     </div>
                 </article>
 
                 <article class="course-card">
                     <div class="card-image image-placeholder"
                          role="img"
-                         aria-label="Animal behaviour image">
-                        Course Image
+                         aria-label="Veterinary professional providing first aid to a dog">
+                        Pet first aid course image
                     </div>
                     <div class="card-content">
-                        <h3>Animal Behaviour</h3>
-                        <p>Explore animal behaviour and communication.</p>
-                        <a href="course-details.html#animal-behaviour">
-                            View Details
-                        </a>
+                        <h3>Pet First Aid</h3>
+                        <p>Be prepared to respond calmly when your pet needs help.</p>
+                        <p>R750 · 6 weeks</p>
+                        <a href="pet-first-aid.html">View details</a>
                     </div>
                 </article>
             </div>
 
             <a href="courses.html" class="button button-secondary">
-                View All Courses
+                View all courses
             </a>
         </section>
 
+        <!-- Academy benefits are presented as four concise, independent points. -->
         <section class="why-choose-us">
             <div class="section-heading">
-                <p class="eyebrow">Our values</p>
-                <h2>Why Choose Us?</h2>
+                <p class="eyebrow">Why choose us</p>
+                <h2>Learning that puts pets first.</h2>
             </div>
 
             <div class="value-grid">
                 <article class="value-card">
-                    <h3>Care</h3>
-                    <p>Animal care is at the heart of what we do.</p>
+                    <h3>Welfare first</h3>
+                    <p>Gentle approaches that respect each animal’s comfort, needs and pace.</p>
                 </article>
 
                 <article class="value-card">
-                    <h3>Trust</h3>
-                    <p>We aim to provide a welcoming learning experience.</p>
+                    <h3>Practical skills</h3>
+                    <p>Turn clear explanations into useful routines at home or in your work.</p>
                 </article>
 
                 <article class="value-card">
-                    <h3>Professionalism</h3>
-                    <p>We encourage responsible and practical learning.</p>
+                    <h3>Clear pathways</h3>
+                    <p>Choose a focused short course or explore a professional learning path.</p>
+                </article>
+
+                <article class="value-card">
+                    <h3>Transparent fees</h3>
+                    <p>See course prices, bundle discounts and VAT before your next step.</p>
                 </article>
             </div>
         </section>
 
+        <!-- Final course invitation before the shared site footer. -->
         <section class="call-to-action">
-            <h2>Ready to Get Started?</h2>
-            <p>Explore our courses and take the next step in your learning.</p>
+            <h2>A little learning. A lifetime of better care.</h2>
+            <p>Find the course that fits your next chapter with pets.</p>
             <a href="courses.html" class="button button-primary">
-                Get Started
+                Explore courses
             </a>
         </section>
     </main>
 
+    <!-- Shared footer: academy summary, secondary navigation, and legal links. -->
     <footer class="site-footer">
         <div class="footer-brand">
-            <h2>Pawsitive Pet Academy</h2>
-            <p>Learn. Grow. Care.</p>
+            <h2><span>Pawsitive</span> <span>Pet Academy</span></h2>
+            <p>Better learning. Kinder care. Practical pet education for the life you share.</p>
         </div>
 
-        <nav aria-label="Footer navigation">
-            <a href="index.html">Home</a>
-            <a href="about.html">About Us</a>
-            <a href="courses.html">Courses</a>
-            <a href="fees.html">Calculate Fees</a>
-            <a href="contact.html">Contact Us</a>
-        </nav>
-
-        <p class="footer-contact">Contact details to be confirmed by client.</p>
-        <p>&copy; 2026 Pawsitive Pet Academy. All rights reserved.</p>
+        <div class="footer-links">
+            <h3>Explore the academy</h3>
+            <nav aria-label="Footer navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="courses.html">Courses</a>
+                <a href="fees.html">Calculate Fees</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+        </div>
+        <div class="footer-legal">
+            <p>&copy; 2026 Pawsitive Pet Academy. All rights reserved.</p>
+            <p>Privacy policy · Terms of use</p>
+        </div>
     </footer>
 
 </body>
