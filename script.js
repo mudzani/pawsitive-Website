@@ -97,7 +97,7 @@ function getCourseEnquiry(search) {
         return { type: 'general' };
     }
 
-    if (courses.length !== 1 || !Object.prototype.hasOwnProperty.call(COURSE_NAMES, courses[0])) {
+    if (courses.length !== 1) {
         return { type: 'invalid' };
     }
 
