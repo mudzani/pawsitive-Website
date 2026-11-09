@@ -101,8 +101,14 @@ function getCourseEnquiry(search) {
         return { type: 'invalid' };
     }
 
-    const id = courses[0];
-    return { type: 'course', id, name: COURSE_NAMES[id] };
+    const course = Object.entries(COURSE_NAMES)
+        .find(([id, name]) => id === courses[0] || name === courses[0]);
+    if (!course) {
+        return { type: 'invalid' };
+    }
+
+    const [id, name] = course;
+    return { type: 'course', id, name };
 }
 
 function setupCourseEnquiryLinks() {
@@ -113,7 +119,7 @@ function setupCourseEnquiryLinks() {
 
     document.querySelectorAll('a[href="contact.html"]').forEach(link => {
         if (link.textContent.trim().toLowerCase() === 'enrol now') {
-            link.href = `contact.html?course=${encodeURIComponent(page)}`;
+            link.href = `contact.html?course=${encodeURIComponent(COURSE_NAMES[page])}`;
         }
     });
 }

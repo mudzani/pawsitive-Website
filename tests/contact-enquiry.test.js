@@ -5,6 +5,11 @@ assert.deepEqual(getCourseEnquiry(''), { type: 'general' });
 assert.deepEqual(getCourseEnquiry('?other=value'), { type: 'general' });
 
 for (const [id, name] of Object.entries(COURSE_NAMES)) {
+    assert.deepEqual(getCourseEnquiry(`?course=${encodeURIComponent(name)}`), {
+        type: 'course',
+        id,
+        name
+    });
     assert.deepEqual(getCourseEnquiry(`?course=${encodeURIComponent(id)}`), {
         type: 'course',
         id,
@@ -18,4 +23,4 @@ assert.deepEqual(getCourseEnquiry('?course=canine-obedience-training&course=pupp
 });
 assert.deepEqual(getCourseEnquiry('?course=%3Cscript%3E'), { type: 'invalid' });
 
-console.log('12 contact enquiry assertions passed');
+console.log('19 contact enquiry assertions passed');
