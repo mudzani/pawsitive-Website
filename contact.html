@@ -8,13 +8,20 @@
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
-<body>
+<body class="contact-page">
 
     <!-- Shared site header: academy identity and primary page navigation. -->
     <header class="site-header">
         <a href="index.html" class="logo" aria-label="Pawsitive Pet Academy home">
-            <span>Pawsitive</span>
-            <span>Pet Academy</span>
+            <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+                <circle cx="20" cy="20" r="20" fill="currentColor"></circle>
+                <circle cx="12" cy="14" r="3" fill="#FFFDF9"></circle>
+                <circle cx="18" cy="11" r="3" fill="#FFFDF9"></circle>
+                <circle cx="24" cy="11" r="3" fill="#FFFDF9"></circle>
+                <circle cx="30" cy="14" r="3" fill="#FFFDF9"></circle>
+                <ellipse cx="21" cy="23" rx="6" ry="7" fill="#E8A33D"></ellipse>
+            </svg>
+            <span class="logo-copy"><span>Pawsitive</span><small>Pet Academy</small></span>
         </a>
         <nav aria-label="Main navigation">
             <a href="index.html">Home</a>
@@ -36,53 +43,54 @@
             </p>
         </section>
 
-        <!-- Contact details are illustrative placeholders, not confirmed channels. -->
-        <p class="contact-notice">
-            Illustrative contact details, location and hours for this design.
-        </p>
-
-        <!-- Academy contact channels, location, and opening hours. -->
-        <section class="contact-information">
-            <article class="contact-info-card">
-                <h2>Call us</h2>
-                <p>+27 00 000 0000</p>
-            </article>
-
-            <article class="contact-info-card">
-                <h2>Email us</h2>
-                <p>hello@pawsitive.example</p>
-            </article>
-
-            <article class="contact-info-card">
-                <h2>Location</h2>
-                <p>Durban, South Africa</p>
-            </article>
-
-            <article class="contact-info-card">
-                <h2>Office hours</h2>
-                <p>Mon–Fri · 09:00–17:00 SAST</p>
-            </article>
-        </section>
-
         <!-- Primary contact form collects a question and permission to reply. -->
         <section class="contact-main">
-            <div class="contact-form-section">
-                <h2 id="contact-form-heading">Send us a message</h2>
-                <p>Tell us what you’d like to learn. We’re here to help you find your next step.</p>
-                <p>This form checks your details only. It cannot send or store enquiries.</p>
+            <div class="contact-left-column">
+                <!-- Contact details are illustrative placeholders, not confirmed channels. -->
+                <p class="contact-notice">
+                    Illustrative contact details, location and hours for this design.
+                </p>
 
-                <section class="enquiry-context" aria-live="polite">
-                    <h3 id="enquiry-context-title">General enquiry</h3>
-                    <p id="enquiry-context-description">Complete this form with your question. To ask about one or more courses, select them in the fee calculator first.</p>
-                    <div id="selected-course-context" hidden>
-                        <p>Courses:</p>
-                        <ul id="selected-courses"></ul>
-                        <dl id="selected-fee-summary"></dl>
-                        <p>This is a fee estimate only, not a formal quotation or registration confirmation.</p>
-                    </div>
+                <!-- Academy contact channels, location, and opening hours. -->
+                <section class="contact-information">
+                    <article class="contact-info-card">
+                        <h2>Call us</h2>
+                        <p>+27 00 000 0000</p>
+                    </article>
+
+                    <article class="contact-info-card">
+                        <h2>Email us</h2>
+                        <p>hello@pawsitive.example</p>
+                    </article>
+
+                    <article class="contact-info-card">
+                        <h2>Location</h2>
+                        <p>Durban, South Africa</p>
+                    </article>
+
+                    <article class="contact-info-card">
+                        <h2>Office hours</h2>
+                        <p>Mon–Fri · 09:00–17:00 SAST</p>
+                    </article>
                 </section>
 
-                <form id="contact-form" action="#" method="post">
+                <div class="contact-form-section">
+                    <h2 id="contact-form-heading">Send us a message</h2>
+                    <p>Tell us what you’d like to learn. We’re here to help you find your next step.</p>
+                    <p class="form-limitation">This form checks your details only. It cannot send or store enquiries.</p>
+
+                    <section class="enquiry-context" aria-live="polite">
+                        <h3 id="enquiry-context-title">General enquiry</h3>
+                        <p id="enquiry-context-description">Complete this form with your question. To ask about one or more courses, select them in the fee calculator first.</p>
+                        <div id="selected-course-context" hidden>
+                            <p>Courses:</p>
+                            <ul id="selected-courses"></ul>
+                            <dl id="selected-fee-summary"></dl>
+                            <p>This is a fee estimate only, not a formal quotation or registration confirmation.</p>
+                        </div>
+                    </section>
+
+                    <form id="contact-form" action="#" method="post">
                     <div class="form-group">
                         <label for="name">Full name</label>
                         <input type="text" id="name" name="name"
@@ -136,7 +144,8 @@
                         Validate enquiry
                     </button>
                     <p id="contact-feedback" class="form-feedback" role="status" aria-live="polite"></p>
-                </form>
+                    </form>
+                </div>
             </div>
 
             <!-- Location illustration and course-discovery prompt complement the form. -->
