@@ -135,6 +135,9 @@
             <p id="selected-course-count" class="course-selection-count" aria-live="polite">
                 0 courses selected
             </p>
+            <p id="discount-tier-feedback" class="discount-tier-feedback" aria-live="polite">
+                Select courses to see your discount tier.
+            </p>
             <table>
                 <caption>Course bundle discount rates</caption>
                 <thead>
@@ -144,10 +147,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><th scope="row">1 course</th><td>0% discount</td></tr>
-                    <tr><th scope="row">2 courses</th><td>5% discount</td></tr>
-                    <tr><th scope="row">3 courses</th><td>10% discount</td></tr>
-                    <tr><th scope="row">More than 3 courses</th><td>15% discount</td></tr>
+                    <tr data-course-tier="1"><th scope="row">1 course</th><td>0% discount</td></tr>
+                    <tr data-course-tier="2"><th scope="row">2 courses</th><td>5% discount</td></tr>
+                    <tr data-course-tier="3"><th scope="row">3 courses</th><td>10% discount</td></tr>
+                    <tr data-course-tier="4"><th scope="row">More than 3 courses</th><td>15% discount</td></tr>
                 </tbody>
             </table>
         </section>

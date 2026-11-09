@@ -1004,6 +1004,12 @@ body.contact-page h2 {
     font-weight: 700;
 }
 
+.fees-page .discount-tier-feedback {
+    margin: -0.25rem 0 0.65rem;
+    color: #626862;
+    font-size: 0.78rem;
+}
+
 .fees-page .discount-info table {
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -1019,6 +1025,12 @@ body.contact-page h2 {
 .fees-page .discount-info th,
 .fees-page .discount-info td {
     padding: 0.4rem 0.7rem;
+}
+
+.fees-page .discount-info tbody tr.discount-tier-active {
+    background: var(--mint);
+    color: var(--teal-dark);
+    font-weight: 700;
 }
 
 .fees-page .discount-info thead {

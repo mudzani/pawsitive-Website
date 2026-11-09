@@ -194,6 +194,8 @@ function setupFeeCalculator() {
     const calculateButton = document.getElementById('calculate-fees');
     const continueLink = document.getElementById('continue-to-enquiry');
     const courseCount = document.getElementById('selected-course-count');
+    const discountTierFeedback = document.getElementById('discount-tier-feedback');
+    const discountTiers = [...document.querySelectorAll('[data-course-tier]')];
     const courseInputs = [...form.querySelectorAll('input[name="courses"]')];
     const initialSelection = getCalculatorCourseSelection(location.search);
     let hasInvalidCourseParameter = initialSelection.invalid.length > 0;
@@ -254,7 +256,7 @@ function setupFeeCalculator() {
         const breakdown = document.createElement('dl');
         appendSummaryRow(breakdown, 'Subtotal', formatRand(quote.subtotal));
         appendSummaryRow(breakdown, `Discount (${quote.rate * 100}%)`, `−${formatRand(quote.discount)}`);
-        appendSummaryRow(breakdown, 'After discount', formatRand(quote.afterDiscount));
+        appendSummaryRow(breakdown, 'Price before VAT', formatRand(quote.afterDiscount));
         appendSummaryRow(breakdown, 'VAT (15%)', formatRand(quote.vat));
         appendSummaryRow(breakdown, 'Total including VAT', formatRand(quote.total), true);
         results.append(breakdown);
@@ -276,6 +278,32 @@ function setupFeeCalculator() {
             message.textContent = 'Press Calculate to see the fee breakdown for your selected courses.';
         }
         results.append(message);
+    }
+
+    function updateDiscountTier(quote) {
+        const selectedCount = quote.selected.length;
+        const activeTier = selectedCount === 0
+            ? null
+            : selectedCount > 3
+                ? 4
+                : selectedCount;
+
+        discountTiers.forEach(row => {
+            const isActive = Number(row.dataset.courseTier) === activeTier;
+            row.classList.toggle('discount-tier-active', isActive);
+            if (isActive) {
+                row.setAttribute('aria-current', 'true');
+            } else {
+                row.removeAttribute('aria-current');
+            }
+        });
+
+        if (selectedCount === 0) {
+            discountTierFeedback.textContent = 'Select courses to see your discount tier.';
+            return;
+        }
+
+        discountTierFeedback.textContent = `${selectedCount} selected course${selectedCount === 1 ? '' : 's'} qualify for a ${quote.rate * 100}% discount before VAT.`;
     }
 
     function updateEnquiryLink(courseIds) {
@@ -303,6 +331,7 @@ function setupFeeCalculator() {
             .map(input => input.value);
         const quote = calculateQuote(selectedIds);
         courseCount.textContent = `${quote.selected.length} course${quote.selected.length === 1 ? '' : 's'} selected`;
+        updateDiscountTier(quote);
         if (showSuccess) {
             renderQuote(quote);
         } else {
