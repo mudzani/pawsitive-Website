@@ -245,6 +245,7 @@ function setupContactForm() {
 
     const feedback = document.getElementById('contact-feedback');
     const fields = [...form.querySelectorAll('input, textarea')];
+    const phonePattern = /^[\d+(). -]{7,20}$/;
     let hasAttemptedSubmit = false;
 
     function validateField(field) {
@@ -257,7 +258,7 @@ function setupContactForm() {
                 : 'This field is required.';
         } else if (field.type === 'email' && !field.validity.valid) {
             message = 'Enter a valid email address.';
-        } else if (field.type === 'tel' && value && !field.validity.valid) {
+        } else if (field.type === 'tel' && value && !phonePattern.test(value)) {
             message = 'Enter a valid phone number, or leave this optional field blank.';
         } else if (field.minLength > 0 && value.length < field.minLength) {
             message = `Enter at least ${field.minLength} characters.`;
