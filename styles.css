@@ -542,6 +542,18 @@ main > .contact-information,
     background: var(--white);
 }
 
+.discount-info caption {
+    padding: 0.65rem 1rem;
+    color: var(--teal-dark);
+    font-weight: 700;
+    text-align: left;
+}
+
+.discount-info thead {
+    color: #fff;
+    background: var(--teal);
+}
+
 .discount-info th,
 .discount-info td {
     padding: 0.75rem 1rem;
