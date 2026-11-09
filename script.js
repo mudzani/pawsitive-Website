@@ -259,7 +259,7 @@ function setupFeeCalculator() {
         results.append(breakdown);
 
         const note = document.createElement('p');
-        note.textContent = 'VAT is calculated after the course-count discount. This is an estimate, not a formal invoice.';
+        note.textContent = 'VAT is added after discount. This is an estimate, not a formal invoice.';
         results.append(note);
     }
 
