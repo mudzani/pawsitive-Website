@@ -70,46 +70,61 @@
                 <h2>Send us a message</h2>
                 <p>Tell us what you’d like to learn. We’re here to help you find your next step.</p>
 
-                <form action="#" method="post">
+                <form id="contact-form" action="#" method="post">
                     <div class="form-group">
                         <label for="name">Full name</label>
                         <input type="text" id="name" name="name"
-                               placeholder="Your name" autocomplete="name" required>
+                               placeholder="Your name" autocomplete="name"
+                               minlength="2" required aria-describedby="name-error">
+                        <p id="name-error" class="field-error"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" id="email" name="email"
-                               placeholder="you@example.com" autocomplete="email" required>
+                               placeholder="you@example.com" autocomplete="email"
+                               required aria-describedby="email-error">
+                        <p id="email-error" class="field-error"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="phone">Phone (optional)</label>
                         <input type="tel" id="phone" name="phone"
-                               placeholder="Your phone number" autocomplete="tel">
+                               placeholder="Your phone number" autocomplete="tel"
+                               pattern="[+0-9() .-]{7,20}" maxlength="20"
+                               title="Use 7 to 20 digits, spaces, or phone punctuation."
+                               aria-describedby="phone-error">
+                        <p id="phone-error" class="field-error"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="subject">Subject</label>
                         <input type="text" id="subject" name="subject"
-                               placeholder="What can we help with?" required>
+                               placeholder="What can we help with?"
+                               minlength="3" required aria-describedby="subject-error">
+                        <p id="subject-error" class="field-error"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="message">Message</label>
                         <textarea id="message" name="message" rows="6"
                                   placeholder="Tell us a little about your enquiry..."
-                                  required></textarea>
+                                  minlength="10" required
+                                  aria-describedby="message-error"></textarea>
+                        <p id="message-error" class="field-error"></p>
                     </div>
 
                     <div class="form-group">
-                        <input type="checkbox" id="contact-consent" name="contact-consent" required>
+                        <input type="checkbox" id="contact-consent" name="contact-consent"
+                               required aria-describedby="contact-consent-error">
                         <label for="contact-consent">I agree to be contacted about my enquiry.</label>
+                        <p id="contact-consent-error" class="field-error"></p>
                     </div>
 
                     <button type="submit" class="button button-primary">
                         Send message
                     </button>
+                    <p id="contact-feedback" class="form-feedback" role="status" aria-live="polite"></p>
                 </form>
             </div>
 

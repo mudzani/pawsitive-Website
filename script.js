@@ -237,10 +237,83 @@ function setupFeeCalculator() {
     updateQuote();
 }
 
+function setupContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) {
+        return;
+    }
+
+    const feedback = document.getElementById('contact-feedback');
+    const fields = [...form.querySelectorAll('input, textarea')];
+    let hasAttemptedSubmit = false;
+
+    function validateField(field) {
+        const value = field.type === 'checkbox' ? '' : field.value.trim();
+        let message = '';
+
+        if (field.required && (field.type === 'checkbox' ? !field.checked : !value)) {
+            message = field.type === 'checkbox'
+                ? 'Please agree to be contacted before continuing.'
+                : 'This field is required.';
+        } else if (field.type === 'email' && !field.validity.valid) {
+            message = 'Enter a valid email address.';
+        } else if (field.type === 'tel' && value && !field.validity.valid) {
+            message = 'Enter a valid phone number, or leave this optional field blank.';
+        } else if (field.minLength > 0 && value.length < field.minLength) {
+            message = `Enter at least ${field.minLength} characters.`;
+        }
+
+        const error = document.getElementById(`${field.id}-error`);
+        error.textContent = message;
+        field.setAttribute('aria-invalid', String(Boolean(message)));
+        return message === '';
+    }
+
+    function validateAllFields() {
+        return fields.map(validateField).every(Boolean);
+    }
+
+    fields.forEach(field => {
+        field.addEventListener('invalid', () => {
+            hasAttemptedSubmit = true;
+            validateField(field);
+            feedback.classList.add('error');
+            feedback.textContent = 'Please correct the highlighted fields before continuing.';
+        });
+
+        field.addEventListener(field.type === 'checkbox' ? 'change' : 'input', () => {
+            if (!hasAttemptedSubmit) {
+                return;
+            }
+
+            if (validateAllFields()) {
+                feedback.classList.remove('error');
+                feedback.textContent = '';
+            }
+        });
+    });
+
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        hasAttemptedSubmit = true;
+
+        if (!validateAllFields()) {
+            feedback.classList.add('error');
+            feedback.textContent = 'Please correct the highlighted fields before continuing.';
+            fields.find(field => field.getAttribute('aria-invalid') === 'true').focus();
+            return;
+        }
+
+        feedback.classList.remove('error');
+        feedback.textContent = 'Your message has not been sent. This website does not have a submission service configured.';
+    });
+}
+
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         setupCourseDropdown();
         setupFeeCalculator();
+        setupContactForm();
     });
 }
 

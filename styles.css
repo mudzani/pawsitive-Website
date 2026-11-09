@@ -516,6 +516,21 @@ main > .contact-information,
     color: var(--teal);
 }
 
+.form-feedback.error,
+.field-error {
+    color: #A02020;
+}
+
+.field-error {
+    min-height: 1.2em;
+    margin: 0.25rem 0 0;
+    font-size: 0.88rem;
+}
+
+[aria-invalid="true"] {
+    border-color: #A02020 !important;
+}
+
 .quote-summary .button {
     width: 100%;
     margin-top: 0.65rem;
