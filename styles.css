@@ -754,3 +754,515 @@ main > .contact-information,
         scroll-behavior: auto;
     }
 }
+
+body.fees-page,
+body.contact-page {
+    background: var(--cream);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+body.fees-page h1,
+body.contact-page h1 {
+    margin: 0.25em 0;
+    font-size: clamp(2rem, 4vw, 2.4rem);
+}
+
+body.fees-page h2,
+body.contact-page h2 {
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+}
+
+.fees-page .site-header,
+.contact-page .site-header {
+    min-height: 50px;
+    padding: 0.45rem max(5%, calc((100% - 1200px) / 2));
+}
+
+.fees-page .logo,
+.contact-page .logo {
+    gap: 0.45rem;
+    font-size: 0.9rem;
+}
+
+.logo-mark {
+    display: block;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+}
+
+.logo-copy {
+    display: grid;
+    gap: 0.08rem;
+    text-transform: none;
+}
+
+.logo-copy > span {
+    font-size: 0.95rem;
+}
+
+.logo-copy small {
+    color: var(--charcoal);
+    font-size: 0.48rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.fees-page .site-header nav,
+.contact-page .site-header nav {
+    gap: 0.75rem 1.2rem;
+}
+
+.fees-page .site-header nav a,
+.fees-page .nav-dropdown-toggle,
+.contact-page .site-header nav a,
+.contact-page .nav-dropdown-toggle {
+    font-size: 0.78rem;
+}
+
+.fees-page .page-intro,
+.contact-page .page-intro {
+    padding: 1.8rem 5% !important;
+}
+
+.fees-page .page-intro p:last-child,
+.contact-page .page-intro p:last-child {
+    margin-bottom: 0;
+}
+
+.fees-page .fee-calculator-layout {
+    grid-template-columns: minmax(0, 1.8fr) minmax(225px, 1fr);
+    gap: 1.5rem;
+    padding: 0 5% 1.2rem;
+}
+
+.fees-page .course-selection h2 {
+    margin: 0 0 0.45rem;
+}
+
+.fees-page .course-selection > p {
+    margin: 0.3rem 0 0.65rem;
+    color: #626862;
+    font-size: 0.78rem;
+}
+
+.fees-page .course-selection fieldset {
+    margin: 0.8rem 0;
+}
+
+.fees-page .course-selection legend {
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.fees-page .course-option {
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    gap: 0.2rem 0.65rem;
+    margin: 0.4rem 0;
+    padding: 0.55rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.fees-page .course-option:has(input:checked) {
+    border-color: var(--teal);
+    background: var(--mint);
+}
+
+.fees-page .course-option input {
+    width: 16px;
+    height: 16px;
+}
+
+.fees-page .course-option span:nth-of-type(2) {
+    font-size: 0.68rem;
+}
+
+.fees-page .course-option span:nth-of-type(3) {
+    font-size: 0.78rem;
+}
+
+.fees-page .quote-summary {
+    position: sticky;
+    top: 1rem;
+    padding: 1rem;
+}
+
+.fees-page .quote-summary .eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.62rem;
+}
+
+.fees-page .quote-summary h2 {
+    margin: 0 0 0.65rem;
+}
+
+.fees-page .quote-summary > #quote-results > p:first-child {
+    color: var(--teal);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.fees-page .quote-summary ul {
+    margin: 0.3rem 0 0.65rem;
+    padding-left: 1rem;
+    color: #626862;
+    font-size: 0.7rem;
+}
+
+.fees-page .summary-row {
+    gap: 0.5rem;
+    padding: 0.35rem 0;
+    font-size: 0.7rem;
+}
+
+.fees-page .summary-total {
+    flex-wrap: wrap;
+    color: var(--teal);
+}
+
+.fees-page .summary-total dt {
+    flex-basis: 100%;
+    color: var(--charcoal);
+    font-size: 0.8rem;
+}
+
+.fees-page .summary-total dd {
+    font-size: 1.65rem;
+    letter-spacing: -0.04em;
+}
+
+.fees-page .quote-summary #quote-results > p:last-child {
+    color: #626862;
+    font-size: 0.65rem;
+}
+
+.fees-page .form-feedback {
+    min-height: 0;
+    margin: 0.35rem 0;
+    font-size: 0.7rem;
+}
+
+.fees-page .quote-summary .button {
+    min-height: 38px;
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.72rem;
+}
+
+.fees-page .discount-info {
+    padding: 0.8rem 5% 2rem;
+}
+
+.fees-page .discount-info h2 {
+    margin: 0 0 0.6rem;
+}
+
+.fees-page .discount-info table {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.68rem;
+}
+
+.fees-page .discount-info caption {
+    padding: 0.3rem;
+    font-size: 0;
+}
+
+.fees-page .discount-info th,
+.fees-page .discount-info td {
+    padding: 0.45rem 0.7rem;
+}
+
+.fees-page .discount-info thead {
+    display: none;
+}
+
+.fees-page .site-footer,
+.contact-page .site-footer {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    padding: 1.8rem 5% 1rem;
+    font-size: 0.72rem;
+}
+
+.fees-page .site-footer h2,
+.contact-page .site-footer h2 {
+    margin: 0 0 0.45rem;
+    font-size: 1rem;
+}
+
+.fees-page .site-footer h3,
+.contact-page .site-footer h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.75rem;
+}
+
+.fees-page .site-footer a,
+.contact-page .site-footer a {
+    margin: 0.2rem 0;
+    font-size: 0.68rem;
+}
+
+.fees-page .footer-legal,
+.contact-page .footer-legal {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(231, 243, 237, 0.18);
+    font-size: 0.62rem;
+}
+
+.fees-page .footer-legal p,
+.contact-page .footer-legal p {
+    margin: 0;
+}
+
+.contact-page .page-intro {
+    padding-bottom: 1.3rem !important;
+}
+
+.contact-page .page-intro h1 {
+    margin-top: 0.25rem;
+}
+
+.contact-page .contact-main {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 1.4rem;
+    padding: 0 5% 2.5rem;
+}
+
+.contact-left-column {
+    min-width: 0;
+}
+
+.contact-page .contact-notice {
+    margin: 0 0 0.55rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.68rem;
+}
+
+.contact-page .contact-information {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-bottom: 0.8rem;
+    padding: 0;
+}
+
+.contact-page .contact-info-card {
+    padding: 0.7rem;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.contact-page .contact-info-card h2 {
+    margin: 0 0 0.35rem;
+    color: var(--teal);
+    font-size: 0.78rem;
+}
+
+.contact-page .contact-info-card p {
+    margin: 0;
+    font-size: 0.72rem;
+}
+
+.contact-page .contact-form-section {
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: none;
+}
+
+.contact-page .contact-form-section > h2 {
+    margin: 0 0 0.55rem;
+}
+
+.contact-page .contact-form-section > p {
+    margin: 0.35rem 0;
+    color: #626862;
+    font-size: 0.72rem;
+}
+
+.contact-page .contact-form-section > .form-limitation {
+    color: #626862;
+    font-size: 0.64rem;
+}
+
+.contact-page .enquiry-context {
+    margin: 0.6rem 0;
+    padding: 0.55rem;
+    font-size: 0.7rem;
+}
+
+.contact-page .enquiry-context h3 {
+    font-size: 0.75rem;
+}
+
+.contact-page #contact-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 0.65rem;
+}
+
+.contact-page #contact-form > .form-group {
+    min-width: 0;
+    margin: 0;
+}
+
+.contact-page #contact-form > .form-group:nth-of-type(5),
+.contact-page #contact-form > .form-group:nth-of-type(6),
+.contact-page #contact-form > #contact-feedback {
+    grid-column: 1 / -1;
+}
+
+.contact-page .form-group label {
+    margin-bottom: 0.2rem;
+    font-size: 0.68rem;
+}
+
+.contact-page .form-group input:not([type="checkbox"]),
+.contact-page .form-group textarea {
+    padding: 0.5rem 0.6rem;
+    border-radius: 7px;
+    font-size: 0.72rem;
+}
+
+.contact-page .form-group textarea {
+    min-height: 65px;
+}
+
+.contact-page .form-group input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+}
+
+.contact-page .form-group input[type="checkbox"] + label {
+    display: inline;
+    margin-left: 0.25rem;
+}
+
+.contact-page #contact-form > .button {
+    min-height: 36px;
+    justify-self: start;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.7rem;
+}
+
+.contact-page #contact-feedback {
+    min-height: 0;
+    margin: 0;
+    font-size: 0.7rem;
+}
+
+.contact-page .map-section iframe {
+    height: 250px;
+    min-height: 0;
+    border: 0;
+    border-radius: 12px;
+}
+
+.contact-page .map-section > a,
+.contact-page .map-section > p {
+    font-size: 0.62rem;
+}
+
+.contact-page .map-section > p {
+    margin: 0.35rem 0;
+    color: #626862;
+}
+
+.contact-page .contact-course-prompt {
+    margin-top: 0.8rem;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: none;
+}
+
+.contact-page .contact-course-prompt h2 {
+    margin: 0 0 0.5rem;
+}
+
+.contact-page .contact-course-prompt p {
+    margin: 0.35rem 0;
+    font-size: 0.72rem;
+}
+
+.contact-page .contact-course-prompt .button {
+    width: 100%;
+    min-height: 36px;
+    margin-top: 0.45rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.7rem;
+}
+
+@media (min-width: 641px) {
+    .fees-page .site-header,
+    .contact-page .site-header {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .fees-page .site-header nav,
+    .contact-page .site-header nav {
+        width: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+    }
+
+    .fees-page .site-footer,
+    .contact-page .site-footer {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .fees-page .site-header,
+    .contact-page .site-header {
+        align-items: flex-start;
+    }
+
+    .fees-page .site-header nav,
+    .contact-page .site-header nav {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .fees-page .fee-calculator-layout,
+    .contact-page .contact-main {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .fees-page .quote-summary {
+        position: static;
+    }
+
+    .contact-page #contact-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .contact-page #contact-form > .form-group:nth-of-type(5),
+    .contact-page #contact-form > .form-group:nth-of-type(6),
+    .contact-page #contact-form > #contact-feedback {
+        grid-column: auto;
+    }
+
+    .fees-page .site-footer,
+    .contact-page .site-footer {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .fees-page .footer-legal,
+    .contact-page .footer-legal {
+        grid-column: auto;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+}
