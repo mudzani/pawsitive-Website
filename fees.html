@@ -42,7 +42,7 @@
                 <h2>Select your courses</h2>
                 <p>Choose any combination of professional and short courses.</p>
 
-                <form id="fee-calculator-form" action="#" method="get">
+                <form id="fee-calculator-form">
                     <fieldset>
                         <legend>Professional courses</legend>
 
@@ -113,42 +113,9 @@
             <aside class="quote-summary">
                 <p class="eyebrow">Your learning plan</p>
                 <h2>Fee summary</h2>
-                <p>2 professional courses</p>
-                <ul>
-                    <li>Canine Obedience Training</li>
-                    <li>Pet Grooming</li>
-                </ul>
-                <p>You save R150.00 with this bundle.</p>
-
-                <dl>
-                    <div class="summary-row">
-                        <dt>Subtotal</dt>
-                        <dd>R3000.00</dd>
-                    </div>
-
-                    <div class="summary-row">
-                        <dt>Discount (5%)</dt>
-                        <dd>−R150.00</dd>
-                    </div>
-
-                    <div class="summary-row">
-                        <dt>After discount</dt>
-                        <dd>R2850.00</dd>
-                    </div>
-
-                    <div class="summary-row">
-                        <dt>15% VAT</dt>
-                        <dd>R427.50</dd>
-                    </div>
-
-                    <div class="summary-row summary-total">
-                        <dt>Total including VAT</dt>
-                        <dd>R3277.50</dd>
-                    </div>
-                </dl>
-
-                <p>VAT is 15% of R2850.00, the amount after your course-count discount.</p>
-                <button type="submit" form="fee-calculator-form" class="button button-secondary">Calculate</button>
+                <div id="quote-results" aria-live="polite"></div>
+                <p id="fee-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+                <button id="calculate-fees" type="button" class="button button-secondary">Calculate</button>
                 <a href="contact.html" class="button button-primary">
                     Continue to enrol
                 </a>

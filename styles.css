@@ -506,6 +506,16 @@ main > .contact-information,
     font-size: 1.15rem;
 }
 
+.form-feedback {
+    min-height: 1.5em;
+    color: #A02020;
+    font-weight: 700;
+}
+
+.form-feedback.success {
+    color: var(--teal);
+}
+
 .quote-summary .button {
     width: 100%;
     margin-top: 0.65rem;
