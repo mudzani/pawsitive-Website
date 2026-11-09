@@ -617,15 +617,17 @@ main > .contact-information,
     accent-color: var(--teal);
 }
 
-.map-placeholder {
-    display: grid;
-    min-height: 260px;
-    place-items: center;
-    padding: 1rem;
+.map-section iframe {
+    display: block;
+    width: 100%;
+    min-height: 300px;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: var(--cream);
-    text-align: center;
+}
+
+.map-section > a {
+    display: inline-block;
+    margin-top: 0.6rem;
 }
 
 .contact-course-prompt {
