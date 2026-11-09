@@ -335,6 +335,7 @@ function setupContactForm() {
     const selectedFeeSummary = document.getElementById('selected-fee-summary');
     const selectedCourseContext = document.getElementById('selected-course-context');
     const formHeading = document.getElementById('contact-form-heading');
+    const enquiryContext = contextTitle.closest('.enquiry-context');
     const subject = document.getElementById('subject');
     const message = document.getElementById('message');
     const enquiry = getCourseEnquiry(location.search);
@@ -342,7 +343,10 @@ function setupContactForm() {
     const phonePattern = /^[\d+(). -]{7,20}$/;
     let hasAttemptedSubmit = false;
 
+    enquiryContext.hidden = enquiry.type === 'general';
+
     if (enquiry.type === 'courses') {
+        enquiryContext.hidden = false;
         const names = enquiry.courses.map(course => course.name);
         contextTitle.textContent = 'Enrolment enquiry';
         contextDescription.textContent = 'You are asking about enrolment in these courses. Your calculated fees are shown below:';
@@ -377,6 +381,7 @@ function setupContactForm() {
         subject.value = `Enrolment enquiry: ${names.join(', ')}`;
         message.value = `I am interested in enrolling in ${names.join(', ')}. Please provide more information.`;
     } else if (enquiry.type === 'invalid') {
+        enquiryContext.hidden = false;
         contextTitle.textContent = 'Course not recognised';
         contextDescription.textContent = 'We could not identify that course. You can continue with a general enquiry or choose courses in the fee calculator.';
     } else {
