@@ -193,6 +193,7 @@ function setupFeeCalculator() {
     const feedback = document.getElementById('fee-feedback');
     const calculateButton = document.getElementById('calculate-fees');
     const continueLink = document.getElementById('continue-to-enquiry');
+    const courseCount = document.getElementById('selected-course-count');
     const courseInputs = [...form.querySelectorAll('input[name="courses"]')];
     const initialSelection = getCalculatorCourseSelection(location.search);
     let hasInvalidCourseParameter = initialSelection.invalid.length > 0;
@@ -263,6 +264,20 @@ function setupFeeCalculator() {
         results.append(note);
     }
 
+    function renderPendingQuote(quote) {
+        results.replaceChildren();
+
+        const message = document.createElement('p');
+        if (quote.invalid.length > 0) {
+            message.textContent = 'One or more selected courses are unavailable. Remove invalid selections before calculating.';
+        } else if (quote.selected.length === 0) {
+            message.textContent = 'Select your courses, then calculate to see your fee estimate.';
+        } else {
+            message.textContent = 'Press Calculate to see the fee breakdown for your selected courses.';
+        }
+        results.append(message);
+    }
+
     function updateEnquiryLink(courseIds) {
         if (courseIds.length === 0) {
             continueLink.href = 'contact.html';
@@ -287,7 +302,12 @@ function setupFeeCalculator() {
             .filter(input => input.checked)
             .map(input => input.value);
         const quote = calculateQuote(selectedIds);
-        renderQuote(quote);
+        courseCount.textContent = `${quote.selected.length} course${quote.selected.length === 1 ? '' : 's'} selected`;
+        if (showSuccess) {
+            renderQuote(quote);
+        } else {
+            renderPendingQuote(quote);
+        }
         updateEnquiryLink(quote.selected);
 
         feedback.classList.remove('success');
@@ -295,7 +315,7 @@ function setupFeeCalculator() {
             feedback.textContent = 'Some selected courses could not be priced. Review your selections.';
         } else if (hasInvalidCourseParameter) {
             feedback.textContent = 'Some course details in this link were not recognized. Choose courses below to continue.';
-        } else if (quote.selected.length === 0) {
+        } else if (showSuccess && quote.selected.length === 0) {
             feedback.textContent = 'Select at least one course to calculate your fees.';
         } else if (showSuccess) {
             feedback.textContent = 'Fee estimate updated.';
