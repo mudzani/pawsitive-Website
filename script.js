@@ -111,19 +111,6 @@ function getCourseEnquiry(search) {
     return { type: 'course', id, name };
 }
 
-function setupCourseEnquiryLinks() {
-    const page = location.pathname.split('/').pop().replace(/\.html$/i, '');
-    if (!Object.prototype.hasOwnProperty.call(COURSE_NAMES, page)) {
-        return;
-    }
-
-    document.querySelectorAll('a[href="contact.html"]').forEach(link => {
-        if (link.textContent.trim().toLowerCase() === 'enrol now') {
-            link.href = `contact.html?course=${encodeURIComponent(COURSE_NAMES[page])}`;
-        }
-    });
-}
-
 const COURSE_FEES = Object.freeze({
     'canine-obedience-training': 1500,
     'pet-grooming': 1500,
@@ -383,7 +370,6 @@ function setupContactForm() {
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         setupCourseDropdown();
-        setupCourseEnquiryLinks();
         setupFeeCalculator();
         setupContactForm();
     });
