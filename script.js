@@ -237,10 +237,12 @@ function setupFeeCalculator() {
     updateQuote();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    setupCourseDropdown();
-    setupFeeCalculator();
-});
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setupCourseDropdown();
+        setupFeeCalculator();
+    });
+}
 
 if (typeof module !== 'undefined') {
     module.exports = { calculateQuote, COURSE_FEES };
