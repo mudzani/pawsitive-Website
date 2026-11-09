@@ -1,5 +1,9 @@
 const assert = require('node:assert/strict');
-const { calculateQuote, COURSE_FEES } = require('../script.js');
+const {
+    calculateQuote,
+    COURSE_FEES,
+    getCalculatorCourseSelection
+} = require('../script.js');
 
 const professionalCourses = [
     'canine-obedience-training',
@@ -85,4 +89,31 @@ assert.deepEqual(invalidQuote.selected, []);
 assert.deepEqual(invalidQuote.invalid, ['unknown-course']);
 assert.equal(invalidQuote.total, 0);
 
-console.log(`${cases.length * 4 + 5} calculator assertions passed`);
+assert.deepEqual(getCalculatorCourseSelection(''), {
+    selected: [],
+    invalid: []
+});
+for (const id of [...professionalCourses, ...shortCourses]) {
+    assert.deepEqual(
+        getCalculatorCourseSelection(`?course=${id}`),
+        { selected: [id], invalid: [] }
+    );
+}
+assert.deepEqual(
+    getCalculatorCourseSelection(`?course=${professionalCourses[0]}&course=${shortCourses[0]}`),
+    { selected: [professionalCourses[0], shortCourses[0]], invalid: [] }
+);
+assert.deepEqual(
+    getCalculatorCourseSelection(`?course=${professionalCourses[0]}&course=${professionalCourses[0]}`),
+    { selected: [professionalCourses[0]], invalid: [] }
+);
+assert.deepEqual(getCalculatorCourseSelection('?course=unknown-course'), {
+    selected: [],
+    invalid: ['unknown-course']
+});
+assert.deepEqual(
+    getCalculatorCourseSelection(`?course=${professionalCourses[0]}&course=unknown-course`),
+    { selected: [professionalCourses[0]], invalid: ['unknown-course'] }
+);
+
+console.log(`${cases.length * 4 + 17} calculator assertions passed`);

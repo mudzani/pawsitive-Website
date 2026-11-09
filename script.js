@@ -121,6 +121,19 @@ const COURSE_FEES = Object.freeze({
     'basic-dog-walking': 750
 });
 
+function getCalculatorCourseSelection(search) {
+    const requested = new Set(new URLSearchParams(search).getAll('course'));
+    const selected = [];
+    const invalid = [];
+
+    requested.forEach(id => {
+        (Object.prototype.hasOwnProperty.call(COURSE_FEES, id) ? selected : invalid)
+            .push(id);
+    });
+
+    return { selected, invalid };
+}
+
 function roundCurrency(amount) {
     return Math.round((amount + Number.EPSILON) * 100) / 100;
 }
@@ -176,6 +189,10 @@ function setupFeeCalculator() {
     const feedback = document.getElementById('fee-feedback');
     const calculateButton = document.getElementById('calculate-fees');
     const courseInputs = [...form.querySelectorAll('input[name="courses"]')];
+    const initialSelection = getCalculatorCourseSelection(location.search);
+    courseInputs.forEach(input => {
+        input.checked = initialSelection.selected.includes(input.value);
+    });
 
     function appendSummaryRow(list, label, value, isTotal = false) {
         const row = document.createElement('div');
@@ -215,7 +232,8 @@ function setupFeeCalculator() {
         quote.selected.forEach(id => {
             const input = courseInputs.find(course => course.value === id);
             const item = document.createElement('li');
-            item.textContent = input.closest('label').querySelector('span').textContent;
+            const name = input.closest('label').querySelector('span').textContent;
+            item.textContent = `${name} — ${formatRand(COURSE_FEES[id])}`;
             selectedList.append(item);
         });
         results.append(selectedList);
@@ -249,6 +267,8 @@ function setupFeeCalculator() {
         feedback.classList.remove('success');
         if (quote.invalid.length > 0) {
             feedback.textContent = 'Some selected courses could not be priced. Review your selections.';
+        } else if (initialSelection.invalid.length > 0) {
+            feedback.textContent = 'Some course details in this link were not recognized. Choose courses below to continue.';
         } else if (quote.selected.length === 0) {
             feedback.textContent = 'Select at least one course to calculate your fees.';
         } else if (showSuccess) {
@@ -376,5 +396,11 @@ if (typeof document !== 'undefined') {
 }
 
 if (typeof module !== 'undefined') {
-    module.exports = { calculateQuote, COURSE_FEES, getCourseEnquiry, COURSE_NAMES };
+    module.exports = {
+        calculateQuote,
+        COURSE_FEES,
+        getCalculatorCourseSelection,
+        getCourseEnquiry,
+        COURSE_NAMES
+    };
 }
