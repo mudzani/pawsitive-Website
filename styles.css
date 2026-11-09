@@ -581,6 +581,19 @@ main > .contact-information,
     padding: 1.5rem;
 }
 
+.enquiry-context {
+    margin: 1rem 0;
+    padding: 1rem;
+    border-left: 4px solid var(--amber);
+    border-radius: 8px;
+    background: var(--cream);
+}
+
+.enquiry-context h3,
+.enquiry-context p {
+    margin: 0.25rem 0;
+}
+
 .form-group {
     margin: 1rem 0;
 }

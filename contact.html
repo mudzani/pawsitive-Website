@@ -67,9 +67,15 @@
         <!-- Primary contact form collects a question and permission to reply. -->
         <section class="contact-main">
             <div class="contact-form-section">
-                <h2>Send us a message</h2>
+                <h2 id="contact-form-heading">Send us a message</h2>
                 <p>Tell us what you’d like to learn. We’re here to help you find your next step.</p>
                 <p>This form checks your details only. It cannot send or store enquiries.</p>
+
+                <section class="enquiry-context" aria-live="polite">
+                    <h3 id="enquiry-context-title">General enquiry</h3>
+                    <p id="enquiry-context-description">Complete this form with your question. To ask about a specific course, open its course page and select Enrol now.</p>
+                    <p id="selected-course-context" hidden>Course: <strong id="selected-course"></strong></p>
+                </section>
 
                 <form id="contact-form" action="#" method="post">
                     <div class="form-group">

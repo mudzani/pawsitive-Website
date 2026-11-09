@@ -79,6 +79,45 @@ function setupCourseDropdown() {
     });
 }
 
+const COURSE_NAMES = Object.freeze({
+    'canine-obedience-training': 'Canine Obedience Training',
+    'pet-grooming': 'Pet Grooming',
+    'animal-behaviour': 'Animal Behaviour',
+    'pet-business-management': 'Pet Business Management',
+    'puppy-care': 'Puppy Care',
+    'pet-first-aid': 'Pet First Aid',
+    'basic-dog-walking': 'Basic Dog Walking'
+});
+
+function getCourseEnquiry(search) {
+    const params = new URLSearchParams(search);
+    const courses = params.getAll('course');
+
+    if (courses.length === 0) {
+        return { type: 'general' };
+    }
+
+    if (courses.length !== 1 || !Object.prototype.hasOwnProperty.call(COURSE_NAMES, courses[0])) {
+        return { type: 'invalid' };
+    }
+
+    const id = courses[0];
+    return { type: 'course', id, name: COURSE_NAMES[id] };
+}
+
+function setupCourseEnquiryLinks() {
+    const page = location.pathname.split('/').pop().replace(/\.html$/i, '');
+    if (!Object.prototype.hasOwnProperty.call(COURSE_NAMES, page)) {
+        return;
+    }
+
+    document.querySelectorAll('a[href="contact.html"]').forEach(link => {
+        if (link.textContent.trim().toLowerCase() === 'enrol now') {
+            link.href = `contact.html?course=${encodeURIComponent(page)}`;
+        }
+    });
+}
+
 const COURSE_FEES = Object.freeze({
     'canine-obedience-training': 1500,
     'pet-grooming': 1500,
@@ -244,9 +283,32 @@ function setupContactForm() {
     }
 
     const feedback = document.getElementById('contact-feedback');
+    const contextTitle = document.getElementById('enquiry-context-title');
+    const contextDescription = document.getElementById('enquiry-context-description');
+    const selectedCourse = document.getElementById('selected-course');
+    const formHeading = document.getElementById('contact-form-heading');
+    const subject = document.getElementById('subject');
+    const message = document.getElementById('message');
+    const enquiry = getCourseEnquiry(location.search);
     const fields = [...form.querySelectorAll('input, textarea')];
     const phonePattern = /^[\d+(). -]{7,20}$/;
     let hasAttemptedSubmit = false;
+
+    if (enquiry.type === 'course') {
+        contextTitle.textContent = 'Enrolment enquiry';
+        contextDescription.textContent = 'You are asking about enrolment in this course:';
+        selectedCourse.textContent = enquiry.name;
+        selectedCourse.parentElement.hidden = false;
+        formHeading.textContent = 'Ask about enrolment';
+        subject.value = `Enrolment enquiry: ${enquiry.name}`;
+        message.value = `I am interested in enrolling in ${enquiry.name}. Please provide more information.`;
+    } else if (enquiry.type === 'invalid') {
+        contextTitle.textContent = 'Course not recognised';
+        contextDescription.textContent = 'We could not identify that course. You can continue with a general enquiry or choose a course from the courses page.';
+    } else {
+        contextTitle.textContent = 'General enquiry';
+        contextDescription.textContent = 'Complete this form with your question. To ask about a specific course, open its course page and select Enrol now.';
+    }
 
     function validateField(field) {
         const value = field.type === 'checkbox' ? '' : field.value.trim();
@@ -306,18 +368,21 @@ function setupContactForm() {
         }
 
         feedback.classList.remove('error');
-        feedback.textContent = 'Your message has not been sent. This website does not have a submission service configured.';
+        feedback.textContent = enquiry.type === 'course'
+            ? `Your enrolment enquiry for ${enquiry.name} is ready, but has not been sent or stored. This website does not have a submission service configured.`
+            : 'Your enquiry details are valid, but have not been sent or stored. This website does not have a submission service configured.';
     });
 }
 
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         setupCourseDropdown();
+        setupCourseEnquiryLinks();
         setupFeeCalculator();
         setupContactForm();
     });
 }
 
 if (typeof module !== 'undefined') {
-    module.exports = { calculateQuote, COURSE_FEES };
+    module.exports = { calculateQuote, COURSE_FEES, getCourseEnquiry, COURSE_NAMES };
 }
