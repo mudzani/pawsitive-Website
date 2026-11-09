@@ -832,6 +832,10 @@ body.contact-page h2 {
     padding: 1.2rem 5% !important;
 }
 
+.fees-page .page-intro {
+    padding-block: 0.55rem !important;
+}
+
 .fees-page .page-intro p:last-child,
 .contact-page .page-intro p:last-child {
     margin-bottom: 0;
@@ -851,6 +855,10 @@ body.contact-page h2 {
     margin: 0.3rem 0 0.65rem;
     color: #626862;
     font-size: 0.78rem;
+}
+
+.fees-page .course-selection > p:last-child {
+    margin-bottom: 0;
 }
 
 .fees-page .course-selection fieldset {
@@ -912,6 +920,11 @@ body.contact-page h2 {
     font-weight: 700;
 }
 
+.fees-page #quote-results > p {
+    font-size: 0.65rem;
+    line-height: 1.3;
+}
+
 .fees-page #quote-results > p:not(:first-child) {
     margin: 0.25rem 0;
 }
@@ -921,12 +934,14 @@ body.contact-page h2 {
     padding-left: 1rem;
     color: #626862;
     font-size: 0.7rem;
+    line-height: 1.25;
 }
 
 .fees-page .summary-row {
     gap: 0.5rem;
     padding: 0.2rem 0;
     font-size: 0.66rem;
+    line-height: 1.25;
 }
 
 .fees-page #quote-results dl {
@@ -969,7 +984,7 @@ body.contact-page h2 {
 }
 
 .fees-page .discount-info {
-    padding: 0.45rem 5% 1rem;
+    padding: 0.35rem 5% 0.8rem;
 }
 
 .fees-page .discount-info h2 {
