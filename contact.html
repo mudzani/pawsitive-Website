@@ -73,8 +73,13 @@
 
                 <section class="enquiry-context" aria-live="polite">
                     <h3 id="enquiry-context-title">General enquiry</h3>
-                    <p id="enquiry-context-description">Complete this form with your question. To ask about a specific course, open its course page and select Enrol now.</p>
-                    <p id="selected-course-context" hidden>Course: <strong id="selected-course"></strong></p>
+                    <p id="enquiry-context-description">Complete this form with your question. To ask about one or more courses, select them in the fee calculator first.</p>
+                    <div id="selected-course-context" hidden>
+                        <p>Courses:</p>
+                        <ul id="selected-courses"></ul>
+                        <dl id="selected-fee-summary"></dl>
+                        <p>This is a fee estimate only, not a formal quotation or registration confirmation.</p>
+                    </div>
                 </section>
 
                 <form id="contact-form" action="#" method="post">

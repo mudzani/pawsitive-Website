@@ -91,24 +91,28 @@ const COURSE_NAMES = Object.freeze({
 
 function getCourseEnquiry(search) {
     const params = new URLSearchParams(search);
-    const courses = params.getAll('course');
+    const requestedCourses = params.getAll('course');
 
-    if (courses.length === 0) {
+    if (requestedCourses.length === 0) {
         return { type: 'general' };
     }
 
-    if (courses.length !== 1) {
-        return { type: 'invalid' };
+    const courses = new Map();
+    for (const value of requestedCourses) {
+        const course = Object.entries(COURSE_NAMES)
+            .find(([id, name]) => id === value || name === value);
+        if (!course) {
+            return { type: 'invalid' };
+        }
+        courses.set(course[0], course[1]);
     }
 
-    const course = Object.entries(COURSE_NAMES)
-        .find(([id, name]) => id === courses[0] || name === courses[0]);
-    if (!course) {
-        return { type: 'invalid' };
-    }
-
-    const [id, name] = course;
-    return { type: 'course', id, name };
+    const selectedCourses = [...courses].map(([id, name]) => ({ id, name }));
+    return {
+        type: 'courses',
+        courses: selectedCourses,
+        quote: calculateQuote(selectedCourses.map(course => course.id))
+    };
 }
 
 const COURSE_FEES = Object.freeze({
@@ -188,8 +192,10 @@ function setupFeeCalculator() {
     const results = document.getElementById('quote-results');
     const feedback = document.getElementById('fee-feedback');
     const calculateButton = document.getElementById('calculate-fees');
+    const continueLink = document.getElementById('continue-to-enquiry');
     const courseInputs = [...form.querySelectorAll('input[name="courses"]')];
     const initialSelection = getCalculatorCourseSelection(location.search);
+    let hasInvalidCourseParameter = initialSelection.invalid.length > 0;
     courseInputs.forEach(input => {
         input.checked = initialSelection.selected.includes(input.value);
     });
@@ -257,17 +263,37 @@ function setupFeeCalculator() {
         results.append(note);
     }
 
+    function updateEnquiryLink(courseIds) {
+        if (courseIds.length === 0) {
+            continueLink.href = 'contact.html';
+            return;
+        }
+
+        const params = new URLSearchParams();
+        courseIds.forEach(id => params.append('course', id));
+        continueLink.href = `contact.html?${params.toString()}`;
+    }
+
+    function updateCalculatorUrl(courseIds) {
+        const params = new URLSearchParams();
+        courseIds.forEach(id => params.append('course', id));
+        const query = params.toString();
+        const url = `${location.pathname}${query ? `?${query}` : ''}${location.hash}`;
+        history.replaceState(null, '', url);
+    }
+
     function updateQuote(showSuccess = false) {
         const selectedIds = courseInputs
             .filter(input => input.checked)
             .map(input => input.value);
         const quote = calculateQuote(selectedIds);
         renderQuote(quote);
+        updateEnquiryLink(quote.selected);
 
         feedback.classList.remove('success');
         if (quote.invalid.length > 0) {
             feedback.textContent = 'Some selected courses could not be priced. Review your selections.';
-        } else if (initialSelection.invalid.length > 0) {
+        } else if (hasInvalidCourseParameter) {
             feedback.textContent = 'Some course details in this link were not recognized. Choose courses below to continue.';
         } else if (quote.selected.length === 0) {
             feedback.textContent = 'Select at least one course to calculate your fees.';
@@ -282,7 +308,14 @@ function setupFeeCalculator() {
     }
 
     courseInputs.forEach(input => {
-        input.addEventListener('change', () => updateQuote());
+        input.addEventListener('change', () => {
+            const selectedIds = courseInputs
+                .filter(course => course.checked)
+                .map(course => course.value);
+            hasInvalidCourseParameter = false;
+            updateCalculatorUrl(selectedIds);
+            updateQuote();
+        });
     });
 
     calculateButton.addEventListener('click', () => updateQuote(true));
@@ -298,7 +331,9 @@ function setupContactForm() {
     const feedback = document.getElementById('contact-feedback');
     const contextTitle = document.getElementById('enquiry-context-title');
     const contextDescription = document.getElementById('enquiry-context-description');
-    const selectedCourse = document.getElementById('selected-course');
+    const selectedCourses = document.getElementById('selected-courses');
+    const selectedFeeSummary = document.getElementById('selected-fee-summary');
+    const selectedCourseContext = document.getElementById('selected-course-context');
     const formHeading = document.getElementById('contact-form-heading');
     const subject = document.getElementById('subject');
     const message = document.getElementById('message');
@@ -307,17 +342,43 @@ function setupContactForm() {
     const phonePattern = /^[\d+(). -]{7,20}$/;
     let hasAttemptedSubmit = false;
 
-    if (enquiry.type === 'course') {
+    if (enquiry.type === 'courses') {
+        const names = enquiry.courses.map(course => course.name);
         contextTitle.textContent = 'Enrolment enquiry';
-        contextDescription.textContent = 'You are asking about enrolment in this course:';
-        selectedCourse.textContent = enquiry.name;
-        selectedCourse.parentElement.hidden = false;
+        contextDescription.textContent = 'You are asking about enrolment in these courses. Your calculated fees are shown below:';
+        enquiry.courses.forEach(course => {
+            const item = document.createElement('li');
+            item.textContent = `${course.name} — ${formatRand(COURSE_FEES[course.id])}`;
+            selectedCourses.append(item);
+        });
+
+        const summaryRows = [
+            ['Subtotal', formatRand(enquiry.quote.subtotal)],
+            [`Discount (${enquiry.quote.rate * 100}%)`, `−${formatRand(enquiry.quote.discount)}`],
+            ['After discount', formatRand(enquiry.quote.afterDiscount)],
+            ['VAT (15%)', formatRand(enquiry.quote.vat)],
+            ['Total including VAT', formatRand(enquiry.quote.total)]
+        ];
+        summaryRows.forEach(([label, amount], index) => {
+            const row = document.createElement('div');
+            row.className = index === summaryRows.length - 1
+                ? 'summary-row summary-total'
+                : 'summary-row';
+            const term = document.createElement('dt');
+            term.textContent = label;
+            const value = document.createElement('dd');
+            value.textContent = amount;
+            row.append(term, value);
+            selectedFeeSummary.append(row);
+        });
+
+        selectedCourseContext.hidden = false;
         formHeading.textContent = 'Ask about enrolment';
-        subject.value = `Enrolment enquiry: ${enquiry.name}`;
-        message.value = `I am interested in enrolling in ${enquiry.name}. Please provide more information.`;
+        subject.value = `Enrolment enquiry: ${names.join(', ')}`;
+        message.value = `I am interested in enrolling in ${names.join(', ')}. Please provide more information.`;
     } else if (enquiry.type === 'invalid') {
         contextTitle.textContent = 'Course not recognised';
-        contextDescription.textContent = 'We could not identify that course. You can continue with a general enquiry or choose a course from the courses page.';
+        contextDescription.textContent = 'We could not identify that course. You can continue with a general enquiry or choose courses in the fee calculator.';
     } else {
         contextTitle.textContent = 'General enquiry';
         contextDescription.textContent = 'Complete this form with your question. To ask about a specific course, open its course page and select Enrol now.';
@@ -381,8 +442,8 @@ function setupContactForm() {
         }
 
         feedback.classList.remove('error');
-        feedback.textContent = enquiry.type === 'course'
-            ? `Your enrolment enquiry for ${enquiry.name} is ready, but has not been sent or stored. This website does not have a submission service configured.`
+        feedback.textContent = enquiry.type === 'courses'
+            ? `Your enrolment enquiry for ${enquiry.courses.map(course => course.name).join(', ')} is ready, but has not been sent or stored. This website does not have a submission service configured.`
             : 'Your enquiry details are valid, but have not been sent or stored. This website does not have a submission service configured.';
     });
 }
