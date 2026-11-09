@@ -303,7 +303,8 @@ function setupFeeCalculator() {
             return;
         }
 
-        discountTierFeedback.textContent = `${selectedCount} selected course${selectedCount === 1 ? '' : 's'} qualify for a ${quote.rate * 100}% discount before VAT.`;
+        const courseNoun = selectedCount === 1 ? 'course qualifies' : 'courses qualify';
+        discountTierFeedback.textContent = `${selectedCount} selected ${courseNoun} for a ${quote.rate * 100}% discount before VAT.`;
     }
 
     function updateEnquiryLink(courseIds) {
