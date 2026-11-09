@@ -77,7 +77,9 @@
                 <div class="contact-form-section">
                     <h2 id="contact-form-heading">Send us a message</h2>
                     <p>Tell us what you’d like to learn. We’re here to help you find your next step.</p>
-                    <p class="form-limitation">This form checks your details only. It cannot send or store enquiries.</p>
+                    <p class="form-limitation">
+                        Your enquiry will be sent through FormSubmit. Please do not include sensitive information.
+                    </p>
 
                     <section class="enquiry-context" aria-live="polite">
                         <h3 id="enquiry-context-title">General enquiry</h3>
@@ -90,7 +92,11 @@
                         </div>
                     </section>
 
-                    <form id="contact-form" action="#" method="post">
+                    <form id="contact-form"
+                          action="https://formsubmit.co/ajax/donald.mudzani@gmail.com"
+                          method="POST">
+                    <input type="hidden" name="_subject" value="Pawsitive Pet Academy enquiry">
+                    <input type="hidden" name="_template" value="table">
                     <div class="form-group">
                         <label for="name">Full name</label>
                         <input type="text" id="name" name="name"
@@ -136,12 +142,14 @@
                     <div class="form-group">
                         <input type="checkbox" id="contact-consent" name="contact-consent"
                                required aria-describedby="contact-consent-error">
-                        <label for="contact-consent">I agree to be contacted about my enquiry.</label>
+                        <label for="contact-consent">
+                            I agree to send my contact details and enquiry through FormSubmit so the academy can reply.
+                        </label>
                         <p id="contact-consent-error" class="field-error"></p>
                     </div>
 
                     <button type="submit" class="button button-primary">
-                        Validate enquiry
+                        Send enquiry
                     </button>
                     <p id="contact-feedback" class="form-feedback" role="status" aria-live="polite"></p>
                     </form>

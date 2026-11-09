@@ -388,10 +388,14 @@ function setupContactForm() {
     const enquiryContext = contextTitle.closest('.enquiry-context');
     const subject = document.getElementById('subject');
     const message = document.getElementById('message');
+    const submitButton = form.querySelector('button[type="submit"]');
     const enquiry = getCourseEnquiry(location.search);
-    const fields = [...form.querySelectorAll('input, textarea')];
+    const fields = [...form.querySelectorAll('input:not([type="hidden"]), textarea')];
     const phonePattern = /^[\d+(). -]{7,20}$/;
     let hasAttemptedSubmit = false;
+    let isSubmitting = false;
+    let hasSubmitted = false;
+    const submitButtonText = submitButton.textContent.trim();
 
     enquiryContext.hidden = enquiry.type === 'general';
 
@@ -409,7 +413,7 @@ function setupContactForm() {
         const summaryRows = [
             ['Subtotal', formatRand(enquiry.quote.subtotal)],
             [`Discount (${enquiry.quote.rate * 100}%)`, `−${formatRand(enquiry.quote.discount)}`],
-            ['After discount', formatRand(enquiry.quote.afterDiscount)],
+            ['Price before VAT', formatRand(enquiry.quote.afterDiscount)],
             ['VAT (15%)', formatRand(enquiry.quote.vat)],
             ['Total including VAT', formatRand(enquiry.quote.total)]
         ];
@@ -489,6 +493,10 @@ function setupContactForm() {
         event.preventDefault();
         hasAttemptedSubmit = true;
 
+        if (isSubmitting || hasSubmitted) {
+            return;
+        }
+
         if (!validateAllFields()) {
             feedback.classList.add('error');
             feedback.textContent = 'Please correct the highlighted fields before continuing.';
@@ -496,10 +504,91 @@ function setupContactForm() {
             return;
         }
 
+        const formData = new FormData(form);
+        const courseNames = enquiry.type === 'courses'
+            ? enquiry.courses.map(course => course.name)
+            : [];
+        const feeBreakdown = enquiry.type === 'courses'
+            ? [
+                ...enquiry.courses.map(course =>
+                    `${course.name}: ${formatRand(COURSE_FEES[course.id])}`
+                ),
+                `Subtotal: ${formatRand(enquiry.quote.subtotal)}`,
+                `Discount (${enquiry.quote.rate * 100}%): −${formatRand(enquiry.quote.discount)}`,
+                `Price before VAT: ${formatRand(enquiry.quote.afterDiscount)}`,
+                `VAT (15%): ${formatRand(enquiry.quote.vat)}`,
+                `Estimated total including VAT: ${formatRand(enquiry.quote.total)}`,
+                'Fee estimate only; not a formal quotation or registration confirmation.'
+            ].join('\n')
+            : 'No course fee estimate (general enquiry).';
+        formData.set(
+            '_subject',
+            `Pawsitive Pet Academy enquiry: ${subject.value.trim()}`
+        );
+        formData.set(
+            'enquiry_type',
+            enquiry.type === 'courses' ? 'Course enrolment enquiry' : 'General enquiry'
+        );
+        formData.set(
+            'selected_courses',
+            courseNames.length > 0 ? courseNames.join(', ') : 'None (general enquiry)'
+        );
+        formData.set('fee_breakdown', feeBreakdown);
+        formData.set('contact_consent', 'Yes');
+        formData.delete('contact-consent');
+
+        const payload = Object.fromEntries(formData.entries());
+        isSubmitting = true;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
         feedback.classList.remove('error');
-        feedback.textContent = enquiry.type === 'courses'
-            ? `Your enrolment enquiry for ${enquiry.courses.map(course => course.name).join(', ')} is ready, but has not been sent or stored. This website does not have a submission service configured.`
-            : 'Your enquiry details are valid, but have not been sent or stored. This website does not have a submission service configured.';
+        feedback.classList.remove('success');
+        feedback.textContent = 'Sending your enquiry...';
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }).then(async response => {
+            let result;
+            try {
+                result = await response.json();
+            } catch {
+                result = null;
+            }
+
+            const serviceMessage = typeof result?.message === 'string'
+                ? result.message
+                : '';
+            const activationRequired = /activat|confirm.*email|email.*confirm/i
+                .test(serviceMessage);
+            const accepted = result?.success === true || result?.success === 'true';
+
+            if (activationRequired) {
+                feedback.classList.add('error');
+                feedback.textContent = 'FormSubmit requires email activation before it can deliver enquiries. Check the receiving inbox and activate the form, then try again.';
+            } else if (!response.ok || !accepted) {
+                feedback.classList.add('error');
+                feedback.textContent = 'We could not submit your enquiry. Please try again later.';
+            } else {
+                hasSubmitted = true;
+                feedback.classList.add('success');
+                feedback.textContent = 'Your enquiry was submitted through FormSubmit. This is not a course registration or payment confirmation.';
+                submitButton.textContent = 'Enquiry submitted';
+            }
+        }).catch(() => {
+            feedback.classList.add('error');
+            feedback.textContent = 'We could not connect to the enquiry service. Check your connection and try again.';
+        }).finally(() => {
+            isSubmitting = false;
+            if (!hasSubmitted) {
+                submitButton.disabled = false;
+                submitButton.textContent = submitButtonText;
+            }
+        });
     });
 }
 
