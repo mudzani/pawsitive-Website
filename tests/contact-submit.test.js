@@ -272,6 +272,29 @@ async function runSubmitScenarios() {
         }
     );
 
+    let validationFetchCalls = 0;
+    await withFormHarness('', async () => {
+        validationFetchCalls += 1;
+    }, async harness => {
+        harness.fields.find(field => field.id === 'contact-consent').checked = false;
+        await harness.submit();
+        assert.equal(validationFetchCalls, 0, 'missing consent blocks submission');
+        assert.match(harness.feedback.textContent, /correct the highlighted fields/i);
+        assert.equal(harness.button.disabled, false);
+    });
+
+    await withFormHarness('', async () => {
+        validationFetchCalls += 1;
+    }, async harness => {
+        const email = harness.fields.find(field => field.id === 'email');
+        email.value = 'not-an-email';
+        email.validity.valid = false;
+        await harness.submit();
+        assert.equal(validationFetchCalls, 0, 'invalid email blocks submission');
+        assert.equal(global.document.getElementById('email-error').textContent, 'Enter a valid email address.');
+        assert.equal(harness.button.disabled, false);
+    });
+
     let invalidSubmitCalls = 0;
     await withFormHarness(
         '?course=unknown-course',
