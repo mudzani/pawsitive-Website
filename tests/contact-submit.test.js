@@ -166,6 +166,7 @@ function createFormHarness(search = '?course=puppy-care') {
         getElementById(id) {
             return new Map([
                 ['contact-feedback', feedback],
+                ['contact-form', form],
                 ['enquiry-context-title', title],
                 ['enquiry-context-description', description],
                 ['selected-courses', selectedCourses],
