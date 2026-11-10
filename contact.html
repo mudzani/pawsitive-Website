@@ -78,7 +78,7 @@
                     <h2 id="contact-form-heading">Send us a message</h2>
                     <p>Tell us what you’d like to learn. We’re here to help you find your next step.</p>
                     <p class="form-limitation">
-                        Your enquiry will be sent through FormSubmit. Please do not include sensitive information.
+                        Your enquiry will be sent to the academy. Please do not include sensitive information.
                     </p>
 
                     <section class="enquiry-context" aria-live="polite">
@@ -92,11 +92,8 @@
                         </div>
                     </section>
 
-                    <form id="contact-form"
-                          action="https://formsubmit.co/ajax/donald.mudzani@gmail.com"
-                          method="POST">
-                    <input type="hidden" name="_subject" value="Pawsitive Pet Academy enquiry">
-                    <input type="hidden" name="_template" value="table">
+                    <form id="contact-form" action="#" method="POST"
+                          data-endpoint="">
                     <div class="form-group">
                         <label for="name">Full name</label>
                         <input type="text" id="name" name="name"
@@ -143,7 +140,7 @@
                         <input type="checkbox" id="contact-consent" name="contact-consent"
                                required aria-describedby="contact-consent-error">
                         <label for="contact-consent">
-                            I agree to send my contact details and enquiry through FormSubmit so the academy can reply.
+                            I agree to send my contact details and enquiry so the academy can reply.
                         </label>
                         <p id="contact-consent-error" class="field-error"></p>
                     </div>

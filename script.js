@@ -183,6 +183,59 @@ function formatRand(amount) {
     }).format(amount);
 }
 
+function validateContactField(field) {
+    const value = field.type === 'checkbox' ? '' : field.value.trim();
+
+    if (field.required && (field.type === 'checkbox' ? !field.checked : !value)) {
+        return field.type === 'checkbox'
+            ? 'Please agree to be contacted before continuing.'
+            : 'This field is required.';
+    }
+    if (field.type === 'email' && !field.validity.valid) {
+        return 'Enter a valid email address.';
+    }
+    if (field.type === 'tel' && value && !/^[\d+(). -]{7,20}$/.test(value)) {
+        return 'Enter a valid phone number, or leave this optional field blank.';
+    }
+    if (field.minLength > 0 && value.length < field.minLength) {
+        return `Enter at least ${field.minLength} characters.`;
+    }
+    return '';
+}
+
+function createEnquiryPayload(fields, enquiry) {
+    if (!fields || !['general', 'courses'].includes(enquiry.type)) {
+        return null;
+    }
+
+    const courseIds = enquiry.type === 'courses'
+        ? [...new Set(enquiry.courses.map(course => course.id))]
+        : [];
+    if (courseIds.some(id => !Object.prototype.hasOwnProperty.call(COURSE_NAMES, id))) {
+        return null;
+    }
+
+    return {
+        name: fields.name,
+        email: fields.email,
+        phone: fields.phone || '',
+        subject: fields.subject,
+        message: fields.message,
+        enquiry_type: enquiry.type === 'courses'
+            ? 'Course enrolment enquiry'
+            : 'General enquiry',
+        contact_consent: true,
+        selected_course_ids: courseIds
+    };
+}
+
+function isConfirmedBackendResponse(result) {
+    return result?.success === true
+        && result.saved === true
+        && typeof result.submissionId === 'string'
+        && result.submissionId.trim().length > 0;
+}
+
 function setupFeeCalculator() {
     const form = document.getElementById('fee-calculator-form');
     if (!form) {
@@ -391,11 +444,11 @@ function setupContactForm() {
     const submitButton = form.querySelector('button[type="submit"]');
     const enquiry = getCourseEnquiry(location.search);
     const fields = [...form.querySelectorAll('input:not([type="hidden"]), textarea')];
-    const phonePattern = /^[\d+(). -]{7,20}$/;
     let hasAttemptedSubmit = false;
     let isSubmitting = false;
     let hasSubmitted = false;
     const submitButtonText = submitButton.textContent.trim();
+    const endpoint = (form.dataset.endpoint || '').trim();
 
     enquiryContext.hidden = enquiry.type === 'general';
 
@@ -444,21 +497,7 @@ function setupContactForm() {
     }
 
     function validateField(field) {
-        const value = field.type === 'checkbox' ? '' : field.value.trim();
-        let message = '';
-
-        if (field.required && (field.type === 'checkbox' ? !field.checked : !value)) {
-            message = field.type === 'checkbox'
-                ? 'Please agree to be contacted before continuing.'
-                : 'This field is required.';
-        } else if (field.type === 'email' && !field.validity.valid) {
-            message = 'Enter a valid email address.';
-        } else if (field.type === 'tel' && value && !phonePattern.test(value)) {
-            message = 'Enter a valid phone number, or leave this optional field blank.';
-        } else if (field.minLength > 0 && value.length < field.minLength) {
-            message = `Enter at least ${field.minLength} characters.`;
-        }
-
+        const message = validateContactField(field);
         const error = document.getElementById(`${field.id}-error`);
         error.textContent = message;
         field.setAttribute('aria-invalid', String(Boolean(message)));
@@ -489,7 +528,7 @@ function setupContactForm() {
         });
     });
 
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
         event.preventDefault();
         hasAttemptedSubmit = true;
 
@@ -504,40 +543,26 @@ function setupContactForm() {
             return;
         }
 
-        const formData = new FormData(form);
-        const courseNames = enquiry.type === 'courses'
-            ? enquiry.courses.map(course => course.name)
-            : [];
-        const feeBreakdown = enquiry.type === 'courses'
-            ? [
-                ...enquiry.courses.map(course =>
-                    `${course.name}: ${formatRand(COURSE_FEES[course.id])}`
-                ),
-                `Subtotal: ${formatRand(enquiry.quote.subtotal)}`,
-                `Discount (${enquiry.quote.rate * 100}%): −${formatRand(enquiry.quote.discount)}`,
-                `Price before VAT: ${formatRand(enquiry.quote.afterDiscount)}`,
-                `VAT (15%): ${formatRand(enquiry.quote.vat)}`,
-                `Estimated total including VAT: ${formatRand(enquiry.quote.total)}`,
-                'Fee estimate only; not a formal quotation or registration confirmation.'
-            ].join('\n')
-            : 'No course fee estimate (general enquiry).';
-        formData.set(
-            '_subject',
-            `Pawsitive Pet Academy enquiry: ${subject.value.trim()}`
-        );
-        formData.set(
-            'enquiry_type',
-            enquiry.type === 'courses' ? 'Course enrolment enquiry' : 'General enquiry'
-        );
-        formData.set(
-            'selected_courses',
-            courseNames.length > 0 ? courseNames.join(', ') : 'None (general enquiry)'
-        );
-        formData.set('fee_breakdown', feeBreakdown);
-        formData.set('contact_consent', 'Yes');
-        formData.delete('contact-consent');
+        if (enquiry.type === 'invalid') {
+            feedback.classList.add('error');
+            feedback.textContent = 'We could not verify the selected course. Please return to the fee calculator and select your courses again.';
+            return;
+        }
 
-        const payload = Object.fromEntries(formData.entries());
+        if (!endpoint) {
+            feedback.classList.add('error');
+            feedback.textContent = 'The enquiry service is not configured yet. Please contact the academy directly.';
+            return;
+        }
+
+        const fieldsData = Object.fromEntries(new FormData(form).entries());
+        const payload = createEnquiryPayload(fieldsData, enquiry);
+        if (!payload) {
+            feedback.classList.add('error');
+            feedback.textContent = 'We could not verify your enquiry details. Please refresh the page and try again.';
+            return;
+        }
+
         isSubmitting = true;
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
@@ -545,50 +570,43 @@ function setupContactForm() {
         feedback.classList.remove('success');
         feedback.textContent = 'Sending your enquiry...';
 
-        fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        }).then(async response => {
-            let result;
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            let result = null;
             try {
                 result = await response.json();
             } catch {
                 result = null;
             }
 
-            const serviceMessage = typeof result?.message === 'string'
-                ? result.message
-                : '';
-            const activationRequired = /activat|confirm.*email|email.*confirm/i
-                .test(serviceMessage);
-            const accepted = result?.success === true || result?.success === 'true';
-
-            if (activationRequired) {
+            if (!response.ok || !isConfirmedBackendResponse(result)) {
                 feedback.classList.add('error');
-                feedback.textContent = 'FormSubmit requires email activation before it can deliver enquiries. Check the receiving inbox and activate the form, then try again.';
-            } else if (!response.ok || !accepted) {
-                feedback.classList.add('error');
-                feedback.textContent = 'We could not submit your enquiry. Please try again later.';
+                feedback.textContent = 'We could not confirm that your enquiry was saved. Please try again later, or contact the academy if the problem continues.';
             } else {
                 hasSubmitted = true;
                 feedback.classList.add('success');
-                feedback.textContent = 'Your enquiry was submitted through FormSubmit. This is not a course registration or payment confirmation.';
+                feedback.textContent = result.emailSent === true
+                    ? 'Your enquiry was received successfully. This is not a course registration or payment confirmation.'
+                    : 'Your enquiry was saved, but the academy email notification could not be confirmed. Please do not submit it again.';
                 submitButton.textContent = 'Enquiry submitted';
             }
-        }).catch(() => {
+        } catch {
             feedback.classList.add('error');
-            feedback.textContent = 'We could not connect to the enquiry service. Check your connection and try again.';
-        }).finally(() => {
+            feedback.textContent = 'We could not confirm whether your enquiry was saved. Please try again later, or contact the academy if the problem continues.';
+        } finally {
             isSubmitting = false;
             if (!hasSubmitted) {
                 submitButton.disabled = false;
                 submitButton.textContent = submitButtonText;
             }
-        });
+        }
     });
 }
 
@@ -606,6 +624,10 @@ if (typeof module !== 'undefined') {
         COURSE_FEES,
         getCalculatorCourseSelection,
         getCourseEnquiry,
-        COURSE_NAMES
+        COURSE_NAMES,
+        validateContactField,
+        createEnquiryPayload,
+        isConfirmedBackendResponse,
+        setupContactForm
     };
 }
