@@ -80,6 +80,22 @@ Contact form
 
 The contact form confirms an enquiry, not student registration or payment.
 
+## Recommended way to access the website
+
+**For normal use and reliable enquiry submissions, use the published GitHub Pages link:**
+
+[https://mudzani.github.io/pawsitive-Website/](https://mudzani.github.io/pawsitive-Website/)
+
+The GitHub Pages origin (`https://mudzani.github.io`) is currently authorised in the Cloudflare Worker's `ALLOWED_ORIGINS` configuration. This means the contact form can send its request through the Worker when the site is opened from the published GitHub Pages website.
+
+You can also open the website locally with VS Code Live Server to work on its pages and browser-based features. However, a local address such as `http://127.0.0.1:5500` or `http://localhost:5500` is a different browser origin from GitHub Pages. Unless that exact local origin is added to the Worker environment's allowed-origin list, the Worker will reject the enquiry request. As a result, the contact form may not complete successfully when the site is run locally.
+
+This is an intentional CORS origin restriction, not evidence that the website itself is broken. GitHub Pages is not technically mandatory: **the important requirement is that the website is opened from an origin authorised by the Worker.** The published GitHub Pages link is the recommended option because its origin is already configured.
+
+If local enquiry testing is required, configure the exact Live Server origin in an appropriate Worker environment before testing. Prefer a separate Preview/testing configuration where available. Avoid adding temporary development origins to Production unless necessary, and remove them when testing is finished. Check the browser address bar for the exact origin; do not guess the hostname or port.
+
+Be aware that a local test uses the configured backend and can create a real enquiry record in Google Sheets and send a real Gmail notification. Do not repeatedly submit the form while troubleshooting.
+
 ## Security and CORS configuration
 
 The Worker reads the `ALLOWED_ORIGINS` environment variable. It must contain
@@ -95,32 +111,7 @@ include a page path or trailing slash. The Worker compares the browser's
 `Origin` header against the configured list. If the origin is not listed, the
 Worker returns HTTP 403 and does not forward the request to Apps Script.
 
-For local development with Live Server:
 
-1. Start Live Server and open the site in a browser.
-2. Read the address bar. For example, `http://127.0.0.1:5500/contact.html`
-   has the origin `http://127.0.0.1:5500`.
-3. Add that exact origin to `ALLOWED_ORIGINS` in the Worker environment used
-   for testing. Use the actual host, scheme, and port shown by your browser.
-   `localhost` and `127.0.0.1` are different origins, as are different ports.
-
-Separate origins are comma-separated:
-
-```text
-https://mudzani.github.io,http://127.0.0.1:5500
-```
-
-The Worker trims whitespace around entries, but exact origin matching still
-applies. Do not use wildcard origins (`*`) as a shortcut. Remove temporary
-local origins when they are no longer needed, especially from production.
-
-CORS is a browser access policy, not authentication. A non-browser client can
-make requests without relying on browser CORS enforcement, and an allowed
-origin does not prove who submitted the form. Keep backend validation and
-appropriate abuse protections in place; do not treat the origin allowlist as
-a substitute for them. The Worker currently checks that the body is valid
-JSON and within its size limit, but does not validate the enquiry's individual
-fields.
 
 ## Setup and local development
 
@@ -139,16 +130,14 @@ contact form needs a browser origin that the Worker can allow.
 
 The contact form currently targets the deployed Worker URL configured in
 `contact.html`. A local page using that URL will still send submissions to the
-configured Apps Script backend. Therefore, a successful test may create a real
-sheet record and email notification.
+configured Apps Script backend, but the Worker will reject the request unless
+the exact local browser origin is authorised in the Worker environment. See
+[Recommended way to access the website](#recommended-way-to-access-the-website)
+and [Security and CORS configuration](#security-and-cors-configuration).
 
-For a browser-based local test, add the exact Live Server origin to the
-`ALLOWED_ORIGINS` variable of the Worker being used. The repository does not
-include a Wrangler configuration, Wrangler dependency, or a separate staging
-Worker, so it does not define a project-specific local Worker command or
-isolated test backend. For a safer end-to-end test, use a separately managed
-test Worker/backend if one is available, and point the form at that test
-Worker. Do not repeatedly submit test enquiries while troubleshooting.
+If the local origin is authorised and a test succeeds, it may create a real
+Google Sheets record and send a real Gmail notification.
+
 
 ## Deployment
 
@@ -175,18 +164,7 @@ The Apps Script endpoint is hard-coded in `cloudflare-worker.mjs`; it is not
 configured through an environment variable in this project. The Apps Script
 deployment itself must be maintained separately.
 
-### Frontend endpoint
 
-`contact.html` currently sets the contact form's `data-endpoint` to:
-
-```text
-https://pawsitive-enquiry-api.donald-mudzani.workers.dev
-```
-
-If the Worker URL changes, update this attribute to the deployed Worker URL
-and publish the updated website. If using a separate test Worker, point a test
-copy of the frontend at that Worker rather than unintentionally directing
-test submissions to the production backend.
 
 ### GitHub Pages
 
@@ -198,29 +176,6 @@ Worker is `https://mudzani.github.io`. Confirm the actual published Pages URL
 and source settings in GitHub before changing deployment settings; those
 settings cannot be verified from the checked-in files.
 
-## Testing and verification
-
-The existing automated tests use Node.js's built-in test runner. From the
-repository root, run:
-
-```powershell
-node --test
-```
-
-The command was verified against the current repository and passed all tests.
-There is no `package.json` or project-specific test script.
-
-For an intentional end-to-end enquiry test:
-
-1. Confirm the Worker allows the exact origin of the page you are testing.
-2. Submit one test enquiry with non-sensitive test details.
-3. Check the browser's form feedback. A saved response should confirm a
-   non-empty submission ID; email delivery is reported separately.
-4. Check the configured Google Sheet for the corresponding record and check
-   the configured Gmail inbox (including spam) for the notification.
-5. If the response says the enquiry was saved but the email notification
-   could not be confirmed, do not submit it again; verify the sheet and
-   notification path first.
 
 The Apps Script, sheet ID/schema, notification recipient, and Gmail settings
 are external to this repository. Verify them in the appropriate Google
@@ -243,21 +198,3 @@ records or notifications.
 - `contact.html` states that the displayed location and office hours are
   illustrative. Its map shows central Durban, not a verified street address.
 
-## Deployment checklist
-
-- [ ] Run `node --test` and confirm all tests pass.
-- [ ] Verify the Apps Script web app is deployed and the Worker can reach it.
-- [ ] Verify the external backend's input validation, Google Sheets access,
-      and Gmail notification settings.
-- [ ] Deploy `cloudflare-worker.mjs` to the intended Cloudflare Worker.
-- [ ] Set production `ALLOWED_ORIGINS` to exactly
-      `https://mudzani.github.io`.
-- [ ] Confirm the contact form's `data-endpoint` matches the deployed Worker
-      URL.
-- [ ] Publish the static website through the intended GitHub Pages source and
-      confirm the published URL.
-- [ ] Perform one controlled enquiry test; verify its sheet record and Gmail
-      notification, and avoid repeat submissions.
-- [ ] Remove any temporary local origins from production `ALLOWED_ORIGINS`.
-- [ ] Confirm no secrets or private access details have been added to the
-      repository.
